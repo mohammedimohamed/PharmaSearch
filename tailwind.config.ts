@@ -1,0 +1,113 @@
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  darkMode: 'class',
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Material 3 / Stitch Design System Tokens
+        surface: '#f9f9ff',
+        'surface-dim': '#cfdaf2',
+        'surface-bright': '#f9f9ff',
+        'surface-container-lowest': '#ffffff',
+        'surface-container-low': '#f0f3ff',
+        'surface-container': '#e7eeff',
+        'surface-container-high': '#dee8ff',
+        'surface-container-highest': '#d8e3fb',
+        'on-surface': '#111c2d',
+        'on-surface-variant': '#3e4947',
+        'inverse-surface': '#263143',
+        'inverse-on-surface': '#ecf1ff',
+        outline: '#6e7977',
+        'outline-variant': '#bdc9c6',
+        'surface-tint': '#006a63',
+        primary: '#005c55',
+        'on-primary': '#ffffff',
+        'primary-container': '#0f766e',
+        'on-primary-container': '#a3faef',
+        'inverse-primary': '#80d5cb',
+        secondary: '#216963',
+        'on-secondary': '#ffffff',
+        'secondary-container': '#a8ece5',
+        'on-secondary-container': '#266d68',
+        tertiary: '#005c54',
+        'on-tertiary': '#ffffff',
+        'tertiary-container': '#00776d',
+        'on-tertiary-container': '#91fdef',
+        error: '#ba1a1a',
+        'on-error': '#ffffff',
+        'error-container': '#ffdad6',
+        'on-error-container': '#93000a',
+        'primary-fixed': '#9cf2e8',
+        'primary-fixed-dim': '#80d5cb',
+        'on-primary-fixed': '#00201d',
+        'on-primary-fixed-variant': '#00504a',
+        'secondary-fixed': '#abefe8',
+        'secondary-fixed-dim': '#8fd3cc',
+        'on-secondary-fixed': '#00201e',
+        'on-secondary-fixed-variant': '#00504b',
+        'tertiary-fixed': '#89f5e7',
+        'tertiary-fixed-dim': '#6bd8cb',
+        'on-tertiary-fixed': '#00201d',
+        'on-tertiary-fixed-variant': '#005049',
+        background: '#f9f9ff',
+        'on-background': '#111c2d',
+        'surface-variant': '#d8e3fb',
+
+        // Specific Regulatory Status Badges
+        status: {
+          active: {
+            bg: '#DCFCE7',
+            border: '#86EFAC',
+            text: '#15803D',
+          },
+          nonRenewed: {
+            bg: '#FEF3C7',
+            border: '#FCD34D',
+            text: '#B45309',
+          },
+          withdrawn: {
+            bg: '#FEE2E2',
+            border: '#FCA5A5',
+            text: '#B91C1C',
+          },
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Noto Sans Arabic', 'sans-serif'],
+        arabic: ['Noto Sans Arabic', 'Segoe UI', 'Tahoma', 'sans-serif'],
+        mono: ['monospace'],
+      },
+      borderRadius: {
+        sm: '0.25rem',
+        DEFAULT: '0.5rem',
+        md: '0.75rem',
+        lg: '1rem',
+        xl: '1.5rem',
+        full: '9999px',
+      },
+      spacing: {
+        gutter: '1.5rem',
+        margin: '1rem',
+        'space-xs': '0.25rem',
+        'space-sm': '0.5rem',
+        'space-md': '1rem',
+        'space-lg': '1.5rem',
+        'space-xl': '2rem',
+      },
+      boxShadow: {
+        sm: '0 1px 3px 0 rgba(15, 23, 42, 0.05)',
+        DEFAULT: '0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.08)',
+        md: '0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06)',
+        lg: '0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04)',
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;

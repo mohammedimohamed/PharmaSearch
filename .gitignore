@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build artifacts & caches
+dist/
+dist-ssr/
+build/
+*.tsbuildinfo
+
+# Local environment & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Source input assets (preserve locally; do not publish or commit raw binaries)
+*.xlsx
+*.zip
+
+# Test & coverage
+coverage/
+
+# IDE & Editor artifacts
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Antigravity & Scratch files
+.system_generated/
+.gemini/
+scratch/
+screenshots/
+*.log
+temp_*
