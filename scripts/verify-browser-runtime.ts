@@ -110,6 +110,36 @@ async function runBrowserAudit() {
   const screenshotsDir = path.resolve(process.cwd(), 'screenshots');
   fs.mkdirSync(screenshotsDir, { recursive: true });
 
+  // Ensure preview server is available
+  let previewProcess: ChildProcess | null = null;
+  let isServerUp = false;
+  try {
+    const res = await fetch('http://localhost:4173/');
+    if (res.ok) isServerUp = true;
+  } catch {
+    // ignore
+  }
+
+  if (!isServerUp) {
+    console.log('Spawning vite preview on port 4173...');
+    previewProcess = spawn('npx.cmd', ['vite', 'preview', '--port', '4173'], {
+      stdio: 'ignore',
+      shell: true,
+    });
+    for (let i = 0; i < 30; i++) {
+      try {
+        const res = await fetch('http://localhost:4173/');
+        if (res.ok) {
+          isServerUp = true;
+          break;
+        }
+      } catch {
+        // ignore
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+  }
+
   const tempProfile = path.resolve(process.env.TEMP || '.', `chrome_audit_${Date.now()}`);
   const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   const debuggingPort = 9222;
@@ -182,25 +212,44 @@ async function runBrowserAudit() {
     await cdp.captureScreenshot(path.join(screenshotsDir, '01_home_desktop_1440.png'));
     console.log(`✓ Home page counts verified: ${JSON.stringify(countsCheck)}. Screenshot saved.`);
 
-    // 2. Mobile Viewport (375px) - Check responsiveness & horizontal overflow
-    console.log('\n2. Testing Mobile Responsiveness (375px)...');
-    await cdp.setViewport(375, 812, 2, true);
-    await cdp.navigate('http://localhost:4173/#/');
-    await new Promise((r) => setTimeout(r, 600));
+    // 2. Mobile Viewports (320px, 360px, 375px, 390px, 430px) - Check responsiveness & horizontal overflow
+    console.log('\n2. Testing Mobile Responsiveness across key mobile viewports (320px, 360px, 375px, 390px, 430px)...');
+    for (const mobileWidth of [320, 360, 375, 390, 430]) {
+      await cdp.setViewport(mobileWidth, 750, 2, true);
+      // Test search page with active query (SAIDAL)
+      await cdp.navigate('http://localhost:4173/#/recherche?q=SAIDAL');
+      await new Promise((r) => setTimeout(r, 800));
 
-    const mobileOverflow = await cdp.evaluate(`
-      document.scrollingElement.scrollWidth > window.innerWidth + 2
-    `);
-    auditResults['mobile_no_horizontal_overflow'] = !mobileOverflow;
-    await cdp.captureScreenshot(path.join(screenshotsDir, '02_home_mobile_375.png'));
-    console.log(`✓ Mobile 375px inspected. Horizontal overflow detected: ${mobileOverflow}. Screenshot saved.`);
+      const overflowMetrics = await cdp.evaluate(`
+        (() => {
+          const docEl = document.documentElement;
+          const body = document.body;
+          const innerWidth = window.innerWidth;
+          const scrollWidth = Math.max(docEl.scrollWidth, body.scrollWidth);
+          return {
+            innerWidth,
+            scrollWidth,
+            hasOverflow: scrollWidth > innerWidth + 1
+          };
+        })()
+      `);
+
+      auditResults[`mobile_${mobileWidth}px_no_overflow`] = !overflowMetrics.hasOverflow;
+      if (mobileWidth === 375) {
+        await cdp.captureScreenshot(path.join(screenshotsDir, '02_search_mobile_375.png'));
+      }
+      console.log(`✓ Mobile ${mobileWidth}px search results inspected. Overflow: ${overflowMetrics.hasOverflow} (scrollWidth: ${overflowMetrics.scrollWidth}px, innerWidth: ${overflowMetrics.innerWidth}px)`);
+    }
 
     // 3. Tablet Viewport (768px)
     console.log('\n3. Testing Tablet Responsiveness (768px)...');
     await cdp.setViewport(768, 1024, 1.5, false);
-    await cdp.navigate('http://localhost:4173/#/');
-    await cdp.captureScreenshot(path.join(screenshotsDir, '03_home_tablet_768.png'));
-    console.log('✓ Tablet 768px inspected. Screenshot saved.');
+    await cdp.navigate('http://localhost:4173/#/recherche?q=SAIDAL');
+    await new Promise((r) => setTimeout(r, 800));
+    const tabletOverflow = await cdp.evaluate(`document.documentElement.scrollWidth > window.innerWidth + 1`);
+    auditResults['tablet_768px_no_overflow'] = !tabletOverflow;
+    await cdp.captureScreenshot(path.join(screenshotsDir, '03_search_tablet_768.png'));
+    console.log(`✓ Tablet 768px inspected. Overflow: ${tabletOverflow}. Screenshot saved.`);
 
     // Back to desktop for comprehensive functional testing
     await cdp.setViewport(1440, 900);
@@ -420,6 +469,9 @@ async function runBrowserAudit() {
     console.log('========================================');
   } finally {
     chromeProcess.kill();
+    if (previewProcess) {
+      previewProcess.kill();
+    }
     try {
       fs.rmSync(tempProfile, { recursive: true, force: true });
     } catch {

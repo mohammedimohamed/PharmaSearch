@@ -32,10 +32,10 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface text-on-surface">
+    <div className="min-h-screen flex flex-col bg-surface text-on-surface w-full overflow-x-clip">
       <RegulatoryBanner />
       <Header />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full">
         {pageContent}
       </div>
       <Footer />

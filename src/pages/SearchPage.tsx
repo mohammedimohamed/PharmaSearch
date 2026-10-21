@@ -156,25 +156,25 @@ export const SearchPage: React.FC = () => {
         </form>
 
         {/* Query status and controls */}
-        <div className="mt-4 pt-4 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-on-surface-variant font-medium">
+        <div className="mt-4 pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 text-on-surface-variant font-medium flex-wrap min-w-0">
             <span>
               {t.resultsFound
                 .replace('{count}', searchResults.totalHits.toLocaleString())
                 .replace('{time}', searchResults.executionTimeMs.toString())}
             </span>
             {activeQuery && (
-              <span className="font-semibold text-primary">« {activeQuery} »</span>
+              <span className="font-semibold text-primary truncate max-w-[200px]">« {activeQuery} »</span>
             )}
           </div>
 
           {/* Controls: Sort and Density */}
-          <div className="flex items-center gap-3 ms-auto">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto sm:ms-auto">
             {/* Mobile Filter Button */}
             <button
               type="button"
               onClick={() => setIsMobileFilterOpen(true)}
-              className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant/40 text-on-surface font-medium"
+              className="lg:hidden inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg border border-outline-variant/40 text-on-surface font-medium shrink-0 cursor-pointer transition-colors"
             >
               <span className="material-symbols-outlined text-[18px]">tune</span>
               <span>{t.filtersTitle}</span>
@@ -186,12 +186,12 @@ export const SearchPage: React.FC = () => {
             </button>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-on-surface-variant hidden sm:inline">{t.sortLabel}:</span>
+            <div className="flex-1 sm:flex-initial flex items-center gap-1.5 min-w-[140px] max-w-full">
+              <span className="text-on-surface-variant hidden md:inline shrink-0">{t.sortLabel}:</span>
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-                className="bg-surface-container-low border border-outline-variant/40 rounded-lg py-1.5 px-2.5 text-xs text-on-surface font-medium focus:ring-1 focus:ring-primary focus:outline-none"
+                className="w-full sm:w-auto bg-surface-container-low border border-outline-variant/40 rounded-lg py-1.5 px-2.5 text-xs text-on-surface font-medium focus:ring-1 focus:ring-primary focus:outline-none truncate"
                 aria-label={t.sortLabel}
               >
                 <option value="relevance">{t.sortRelevance}</option>
@@ -205,7 +205,9 @@ export const SearchPage: React.FC = () => {
             </div>
 
             {/* Density Toggle */}
-            <DensityToggle />
+            <div className="w-full sm:w-auto flex justify-center sm:justify-start">
+              <DensityToggle className="w-full sm:w-auto" />
+            </div>
           </div>
         </div>
 

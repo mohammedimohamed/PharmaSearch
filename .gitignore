@@ -39,6 +39,7 @@ Thumbs.db
 ehthumbs.db
 
 # Antigravity & Scratch files
+.agents/
 .system_generated/
 .gemini/
 scratch/
