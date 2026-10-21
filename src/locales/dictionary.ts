@@ -22,6 +22,18 @@ export interface TranslationDictionary {
   localStorageNotice: string;
   footerCopyright: string;
 
+  // Sponsorship
+  partnersSectionTitle: string;
+  sponsorLabel: string;
+  sponsorTitle: string;
+  sponsorWebsite: string;
+  sponsorLinkedIn: string;
+  sponsorAltLogo: string;
+  openSlotTitle: string;
+  openSlotDesc: string;
+  openSlotCta: string;
+  openSlotSupporting: string;
+
   // Status Badges
   statusActive: string;
   statusNonRenewed: string;
@@ -248,6 +260,17 @@ export const translations: Record<Language, TranslationDictionary> = {
     localStorageNotice: 'Vos favoris et alias personnalisés sont conservés exclusivement sur votre appareil (stockage local du navigateur). Aucune donnée utilisateur ne transite vers un serveur distant.',
     footerCopyright: '© 2026 PharmaSearch DZ — Utilité publique de consultation pharmaceutique.',
 
+    partnersSectionTitle: 'Nos partenaires',
+    sponsorLabel: 'Sponsorisé par',
+    sponsorTitle: 'Sponsorisé par TechWise Advisors',
+    sponsorWebsite: 'Site officiel',
+    sponsorLinkedIn: 'Page LinkedIn',
+    sponsorAltLogo: 'Logo officiel de TechWise Advisors',
+    openSlotTitle: 'Votre organisation ici',
+    openSlotDesc: "Soutenez le développement de PharmaSearch et contribuez à améliorer l’accès à l’information pharmaceutique.",
+    openSlotCta: 'Devenir sponsor',
+    openSlotSupporting: "Contactez-nous sur LinkedIn pour discuter d’un partenariat.",
+
     statusActive: 'Actif',
     statusNonRenewed: 'Non renouvelé',
     statusWithdrawn: 'Retiré',
@@ -464,6 +487,17 @@ export const translations: Record<Language, TranslationDictionary> = {
     legalDisclaimer: 'يعكس هذا الموقع التصنيف الرسمي المسجل في القوائم المرجعية. إدراج أي دواء لا يضمن توفره الفعلي في الصيدليات، ويجب استشارة الطبيب أو الصيدلي دائماً.',
     localStorageNotice: 'يتم حفظ التفضيلات والأسماء المستعارة محلياً في متصفحك فقط، ولا يتم إرسالها إلى أي خادم خارجي أو مزامنتها تلقائياً بين أجهزتك.',
     footerCopyright: '© 2026 فارماسيرش الجزائر — خدمة عمومية للاستعلام الصيدلاني.',
+
+    partnersSectionTitle: 'شركاؤنا',
+    sponsorLabel: 'برعاية',
+    sponsorTitle: 'برعاية TechWise Advisors',
+    sponsorWebsite: 'الموقع الرسمي',
+    sponsorLinkedIn: 'صفحة لينكد إن',
+    sponsorAltLogo: 'شعار TechWise Advisors الرسمي',
+    openSlotTitle: 'مؤسستكم هنا',
+    openSlotDesc: 'ساهموا في دعم تطوير PharmaSearch وتحسين الوصول إلى المعلومات الصيدلانية.',
+    openSlotCta: 'كن شريكًا راعيًا',
+    openSlotSupporting: 'تواصلوا معنا عبر LinkedIn لمناقشة فرص الشراكة.',
 
     statusActive: 'نشط',
     statusNonRenewed: 'غير مجدد',
