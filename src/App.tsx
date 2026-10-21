@@ -32,7 +32,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface text-on-surface w-full overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-surface text-on-surface w-full">
       <RegulatoryBanner />
       <Header />
       <div className="flex-1 flex flex-col w-full">

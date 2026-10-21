@@ -31,21 +31,21 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
 
   return (
     <header className="w-full bg-surface-container-lowest border-b border-outline-variant/40 sticky top-0 z-40 shadow-xs">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-[1280px] mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div
           onClick={() => handleNav('/')}
-          className="flex items-center gap-3 cursor-pointer group select-none"
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer group select-none shrink-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm group-hover:bg-primary-container transition-colors">
-            <Pill className="w-5 h-5" aria-hidden="true" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm group-hover:bg-primary-container transition-colors shrink-0">
+            <Pill className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight text-on-surface group-hover:text-primary transition-colors">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-extrabold text-base sm:text-lg tracking-tight text-on-surface group-hover:text-primary transition-colors">
                 PharmaSearch
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-surface-container text-primary border border-outline-variant/30">
+              <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider px-1 sm:px-1.5 py-0.5 rounded bg-surface-container text-primary border border-outline-variant/30">
                 DZ
               </span>
             </div>
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
         </div>
 
         {/* Navigation & Controls */}
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-1.5 sm:gap-6">
           <nav
             aria-label={isAr ? 'التنقل الرئيسي' : 'Navigation principale'}
             className="hidden md:flex items-center gap-5 text-xs font-semibold text-on-surface-variant"
@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
           <button
             type="button"
             onClick={handleToggleLang}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-xs font-semibold text-on-surface cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-xs font-semibold text-on-surface cursor-pointer shadow-xs shrink-0"
             aria-label={isAr ? 'Changer de langue vers le français' : 'تغيير اللغة إلى العربية'}
           >
             <Globe className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
@@ -125,7 +125,7 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-on-surface-variant hover:bg-surface-container"
+            className="md:hidden p-1.5 sm:p-2 rounded-lg text-on-surface-variant hover:bg-surface-container shrink-0"
             aria-label="Menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

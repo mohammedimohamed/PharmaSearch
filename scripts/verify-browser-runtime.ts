@@ -192,7 +192,12 @@ async function runBrowserAudit() {
     console.log('\n1. Testing Home Page (1440px Desktop)...');
     await cdp.setViewport(1440, 900);
     await cdp.navigate('http://localhost:4173/#/');
-    await new Promise((r) => setTimeout(r, 800));
+    // Wait for dataset to finish loading
+    for (let i = 0; i < 20; i++) {
+      const hasLoaded = await cdp.evaluate(`document.querySelector("body").innerText.includes("9 595")`);
+      if (hasLoaded) break;
+      await new Promise((r) => setTimeout(r, 200));
+    }
 
     const countsCheck = await cdp.evaluate(`
       (() => {
@@ -223,13 +228,30 @@ async function runBrowserAudit() {
       const overflowMetrics = await cdp.evaluate(`
         (() => {
           const docEl = document.documentElement;
-          const body = document.body;
-          const innerWidth = window.innerWidth;
-          const scrollWidth = Math.max(docEl.scrollWidth, body.scrollWidth);
+          const clientWidth = docEl.clientWidth;
+          const scrollWidth = docEl.scrollWidth;
+          const hasOverflow = scrollWidth > clientWidth;
+
+          const overflowing = [];
+          if (hasOverflow) {
+            document.querySelectorAll('*').forEach((el) => {
+              const r = el.getBoundingClientRect();
+              if (r.right > clientWidth) {
+                overflowing.push({
+                  tag: el.tagName.toLowerCase(),
+                  className: el.className?.toString?.().slice(0, 50),
+                  right: Math.round(r.right),
+                  excess: Math.round(r.right - clientWidth)
+                });
+              }
+            });
+          }
+
           return {
-            innerWidth,
+            clientWidth,
             scrollWidth,
-            hasOverflow: scrollWidth > innerWidth + 1
+            hasOverflow,
+            overflowing
           };
         })()
       `);
@@ -238,7 +260,10 @@ async function runBrowserAudit() {
       if (mobileWidth === 375) {
         await cdp.captureScreenshot(path.join(screenshotsDir, '02_search_mobile_375.png'));
       }
-      console.log(`✓ Mobile ${mobileWidth}px search results inspected. Overflow: ${overflowMetrics.hasOverflow} (scrollWidth: ${overflowMetrics.scrollWidth}px, innerWidth: ${overflowMetrics.innerWidth}px)`);
+      console.log(`✓ Mobile ${mobileWidth}px search results: clientWidth=${overflowMetrics.clientWidth}px, scrollWidth=${overflowMetrics.scrollWidth}px, hasOverflow=${overflowMetrics.hasOverflow}`);
+      if (overflowMetrics.hasOverflow) {
+        console.error(`  Overflowing elements on ${mobileWidth}px:`, overflowMetrics.overflowing);
+      }
     }
 
     // 3. Tablet Viewport (768px)
@@ -246,10 +271,19 @@ async function runBrowserAudit() {
     await cdp.setViewport(768, 1024, 1.5, false);
     await cdp.navigate('http://localhost:4173/#/recherche?q=SAIDAL');
     await new Promise((r) => setTimeout(r, 800));
-    const tabletOverflow = await cdp.evaluate(`document.documentElement.scrollWidth > window.innerWidth + 1`);
-    auditResults['tablet_768px_no_overflow'] = !tabletOverflow;
+    const tabletMetrics = await cdp.evaluate(`
+      (() => {
+        const docEl = document.documentElement;
+        return {
+          clientWidth: docEl.clientWidth,
+          scrollWidth: docEl.scrollWidth,
+          hasOverflow: docEl.scrollWidth > docEl.clientWidth
+        };
+      })()
+    `);
+    auditResults['tablet_768px_no_overflow'] = !tabletMetrics.hasOverflow;
     await cdp.captureScreenshot(path.join(screenshotsDir, '03_search_tablet_768.png'));
-    console.log(`✓ Tablet 768px inspected. Overflow: ${tabletOverflow}. Screenshot saved.`);
+    console.log(`✓ Tablet 768px inspected: clientWidth=${tabletMetrics.clientWidth}px, scrollWidth=${tabletMetrics.scrollWidth}px, hasOverflow=${tabletMetrics.hasOverflow}. Screenshot saved.`);
 
     // Back to desktop for comprehensive functional testing
     await cdp.setViewport(1440, 900);
@@ -448,6 +482,24 @@ async function runBrowserAudit() {
     auditResults['arabic_lang_attr'] = isLangAr;
     auditResults['arabic_font_applied'] = bodyHasArabicFont;
     auditResults['arabic_content_rendered'] = arabicHeroVisible;
+
+    // Verify Arabic RTL Search on Mobile 375px
+    await cdp.setViewport(375, 812, 2, true);
+    await cdp.navigate('http://localhost:4173/#/recherche?q=SAIDAL');
+    await new Promise((r) => setTimeout(r, 800));
+    const arabicMobileMetrics = await cdp.evaluate(`
+      (() => {
+        const docEl = document.documentElement;
+        return {
+          clientWidth: docEl.clientWidth,
+          scrollWidth: docEl.scrollWidth,
+          hasOverflow: docEl.scrollWidth > docEl.clientWidth
+        };
+      })()
+    `);
+    auditResults['arabic_mobile_375px_no_overflow'] = !arabicMobileMetrics.hasOverflow;
+    await cdp.captureScreenshot(path.join(screenshotsDir, '13_arabic_search_mobile_375.png'));
+    console.log(`✓ Arabic RTL Mobile Search 375px: clientWidth=${arabicMobileMetrics.clientWidth}px, scrollWidth=${arabicMobileMetrics.scrollWidth}px, hasOverflow=${arabicMobileMetrics.hasOverflow}.`);
 
     await cdp.captureScreenshot(path.join(screenshotsDir, '09_arabic_rtl_home.png'));
     console.log(`✓ Arabic RTL verified: dir="rtl": ${isDirRTL}, lang="ar": ${isLangAr}, font: ${bodyHasArabicFont}, content: ${arabicHeroVisible}. Screenshot saved.`);
