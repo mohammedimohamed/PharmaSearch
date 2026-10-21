@@ -84,7 +84,7 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
 
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-semibold text-sm text-primary group-hover:underline truncate">
+              <span className="font-semibold text-sm text-primary group-hover:underline truncate max-w-[180px] sm:max-w-none">
                 {record.brandName}
               </span>
               <StatusBadge sourceList={record.sourceList} />
@@ -115,8 +115,8 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
           </div>
         </div>
 
-        <div className="mt-2 sm:mt-0 flex items-center gap-2 text-xs text-on-surface-variant shrink-0 ps-9 sm:ps-0">
-          <span className="truncate max-w-[150px] font-medium">{record.laboratory}</span>
+        <div className="mt-2 sm:mt-0 flex items-center gap-2 text-xs text-on-surface-variant shrink-0 ps-9 sm:ps-0 max-w-full">
+          <span className="truncate max-w-[120px] sm:max-w-[150px] font-medium">{record.laboratory}</span>
           <span className="material-symbols-outlined text-[18px] text-outline group-hover:text-primary group-hover:translate-x-0.5 transition-transform">
             chevron_right
           </span>
@@ -195,14 +195,14 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
         </div>
 
         {/* Brand & DCI */}
-        <div>
-          <div className="flex items-baseline justify-between gap-2">
-            <h3 className="text-xl font-bold text-primary group-hover:underline">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-xl font-bold text-primary group-hover:underline break-words min-w-0">
               {record.brandName}
             </h3>
-            <span className="text-xs font-mono text-outline">{record.registrationNumber}</span>
+            <span className="text-xs font-mono text-outline shrink-0">{record.registrationNumber}</span>
           </div>
-          <p className="text-sm font-semibold text-on-surface mt-0.5">{record.dci}</p>
+          <p className="text-sm font-semibold text-on-surface mt-0.5 break-words">{record.dci}</p>
           {alias && (
             <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-container/30 text-secondary text-xs font-medium border border-secondary/20">
               <span>🏷️</span>
@@ -316,11 +316,11 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
         </div>
 
         {/* Brand Name & Alias */}
-        <div className="mb-2">
-          <h3 className="text-lg font-bold text-primary group-hover:underline">
+        <div className="mb-2 min-w-0">
+          <h3 className="text-lg font-bold text-primary group-hover:underline break-words">
             {record.brandName}
           </h3>
-          <p className="text-sm font-semibold text-on-surface mt-0.5">{record.dci}</p>
+          <p className="text-sm font-semibold text-on-surface mt-0.5 break-words">{record.dci}</p>
           {alias && (
             <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-container/30 text-secondary text-xs font-medium border border-secondary/20">
               <span>🏷️</span>
@@ -347,11 +347,11 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2.5 border-t border-outline-variant/20 text-xs">
-        <span className="font-mono text-[11px] text-outline">
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-outline-variant/20 text-xs">
+        <span className="font-mono text-[11px] text-outline truncate max-w-[200px] sm:max-w-none">
           N° {record.registrationNumber}
         </span>
-        <span className="inline-flex items-center gap-1 text-primary font-medium group-hover:translate-x-0.5 transition-transform text-xs">
+        <span className="inline-flex items-center gap-1 text-primary font-medium group-hover:translate-x-0.5 transition-transform text-xs shrink-0 ms-auto">
           <span>{t.viewDetails}</span>
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
         </span>

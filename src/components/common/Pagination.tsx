@@ -89,21 +89,28 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={cn(
-            'inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md border border-outline-variant/40 transition-colors',
+            'inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md border border-outline-variant/40 transition-colors shrink-0',
             currentPage === 1
               ? 'opacity-40 cursor-not-allowed bg-surface-container-low text-on-surface-variant'
               : 'hover:bg-surface-container text-on-surface bg-surface-container-lowest'
           )}
           aria-label={t.previousPage}
         >
-          <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
+          <span className="material-symbols-outlined text-[16px] shrink-0" aria-hidden="true">
             {isRTL ? 'chevron_right' : 'chevron_left'}
           </span>
           <span className="hidden sm:inline">{t.previousPage}</span>
         </button>
 
-        {/* Page numbers */}
-        <div className="flex items-center gap-1 px-1">
+        {/* Mobile Page indicator */}
+        <div className="sm:hidden px-2.5 py-1 text-xs font-medium text-on-surface-variant text-center min-w-[60px]">
+          <span className="font-semibold text-primary">{currentPage}</span>
+          <span className="mx-1 text-outline">/</span>
+          <span>{totalPages}</span>
+        </div>
+
+        {/* Desktop Page numbers */}
+        <div className="hidden sm:flex items-center gap-1 px-1">
           {pages.map((p, idx) => {
             if (p === 'ellipsis') {
               return (
@@ -143,7 +150,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={cn(
-            'inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md border border-outline-variant/40 transition-colors',
+            'inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md border border-outline-variant/40 transition-colors shrink-0',
             currentPage === totalPages
               ? 'opacity-40 cursor-not-allowed bg-surface-container-low text-on-surface-variant'
               : 'hover:bg-surface-container text-on-surface bg-surface-container-lowest'
@@ -151,7 +158,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           aria-label={t.nextPage}
         >
           <span className="hidden sm:inline">{t.nextPage}</span>
-          <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
+          <span className="material-symbols-outlined text-[16px] shrink-0" aria-hidden="true">
             {isRTL ? 'chevron_left' : 'chevron_right'}
           </span>
         </button>
