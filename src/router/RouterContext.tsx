@@ -102,12 +102,39 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
 
     const searchStr = searchParams.toString();
-    const newHash = `#${cleanPath}${searchStr ? '?' + searchStr : ''}`;
 
-    if (window.location.hash !== newHash) {
-      window.location.hash = newHash;
+    // Check if target is explicitly a clean registered medicine path (starts with /medicament/ and contains registered 10-hex key)
+    const isCleanRegisteredPath =
+      cleanPath.startsWith('/medicament/') &&
+      !cleanPath.startsWith('/medicament/NOM-') &&
+      !cleanPath.startsWith('/medicament/NON-') &&
+      !cleanPath.startsWith('/medicament/RET-') &&
+      !cleanPath.includes('/#/');
+
+    if (isCleanRegisteredPath) {
+      const finalUrl = `${cleanPath}${searchStr ? '?' + searchStr : ''}`;
+      if (typeof window !== 'undefined') {
+        window.history.pushState(null, '', finalUrl);
+        setRoute({
+          path: cleanPath,
+          params: Object.fromEntries(searchParams.entries()),
+          fullHash: '',
+        });
+      }
     } else {
-      setRoute(parseCurrentLocation());
+      // Standard hash route (e.g. #/recherche or #/favoris or #/medicament/NOM-xxx)
+      const newHash = `#${cleanPath}${searchStr ? '?' + searchStr : ''}`;
+
+      if (window.location.hash !== newHash) {
+        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+          window.history.pushState(null, '', `/${newHash}`);
+          setRoute(parseCurrentLocation());
+        } else {
+          window.location.hash = newHash;
+        }
+      } else {
+        setRoute(parseCurrentLocation());
+      }
     }
 
     // Scroll to top on navigation

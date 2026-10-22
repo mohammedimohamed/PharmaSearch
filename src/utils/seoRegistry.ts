@@ -82,13 +82,21 @@ export function resolveToRecordId(identifier: string): string {
 }
 
 /**
- * Returns the permanent canonical clean URL path for a recordId if registered,
- * or falls back to legacy path for records not yet migrated to the registry.
+ * Returns the canonical clean path only when a registry entry exists;
+ * otherwise returns null.
  */
-export function getCanonicalPathForRecord(recordId: string): string {
-  const registered = RECORD_ID_TO_CANONICAL_PATH.get(recordId);
-  if (registered) {
-    return registered;
+export function getCanonicalPathForRecord(recordId: string): string | null {
+  return RECORD_ID_TO_CANONICAL_PATH.get(recordId) || null;
+}
+
+/**
+ * Returns the registered clean path if available;
+ * otherwise returns the supported hash-based URL (e.g. /#/medicament/NOM-17).
+ */
+export function getHrefForRecord(recordId: string): string {
+  const cleanPath = RECORD_ID_TO_CANONICAL_PATH.get(recordId);
+  if (cleanPath) {
+    return cleanPath;
   }
-  return `/medicament/${recordId}`;
+  return `/#/medicament/${recordId}`;
 }

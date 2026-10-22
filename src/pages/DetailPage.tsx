@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/context/I18nContext';
 import { useRouter, resolveToRecordId } from '@/router/RouterContext';
+import { getHrefForRecord } from '@/utils/seoRegistry';
 import { useData } from '@/context/DataContext';
 import { useFavourites } from '@/context/FavouritesContext';
 import { StatusBadge } from '@/components/common/StatusBadge';
@@ -162,13 +163,16 @@ export const DetailPage: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => navigate(`/medicament/${target.id}`)}
+                <a
+                  href={getHrefForRecord(target.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(getHrefForRecord(target.id));
+                  }}
                   className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition-colors shrink-0"
                 >
                   {t.discrepancyCompareAction}
-                </button>
+                </a>
               </div>
             ))}
           </div>
@@ -510,24 +514,34 @@ export const DetailPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {relatedPresentations.slice(0, 12).map((rel) => (
-              <div
-                key={rel.id}
-                onClick={() => navigate(`/medicament/${rel.id}`)}
-                className="p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary/60 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-all space-y-1.5 group"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <span className="font-bold text-xs text-primary group-hover:underline truncate">
-                    {rel.brandName}
-                  </span>
-                  <StatusBadge sourceList={rel.sourceList} />
+            {relatedPresentations.slice(0, 12).map((rel) => {
+              const relHref = getHrefForRecord(rel.id);
+              return (
+                <div
+                  key={rel.id}
+                  onClick={() => navigate(relHref)}
+                  className="p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary/60 bg-surface-container-low hover:bg-surface-container cursor-pointer transition-all space-y-1.5 group"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <a
+                      href={relHref}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(relHref);
+                      }}
+                      className="font-bold text-xs text-primary hover:underline truncate"
+                    >
+                      {rel.brandName}
+                    </a>
+                    <StatusBadge sourceList={rel.sourceList} />
+                  </div>
+                  <div className="text-[11px] text-on-surface-variant space-y-0.5">
+                    <div className="text-on-surface font-medium truncate">{rel.dosage} • {rel.form}</div>
+                    <div className="text-outline truncate">{rel.laboratory}</div>
+                  </div>
                 </div>
-                <div className="text-[11px] text-on-surface-variant space-y-0.5">
-                  <div className="text-on-surface font-medium truncate">{rel.dosage} • {rel.form}</div>
-                  <div className="text-outline truncate">{rel.laboratory}</div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {relatedPresentations.length > 12 && (
