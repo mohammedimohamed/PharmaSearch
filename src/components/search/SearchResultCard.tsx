@@ -4,6 +4,7 @@ import { StatusBadge } from '@/components/common/StatusBadge';
 import { useFavourites, type DensityMode } from '@/context/FavouritesContext';
 import { useI18n } from '@/context/I18nContext';
 import { useRouter } from '@/router/RouterContext';
+import { getHrefForRecord } from '@/utils/seoRegistry';
 import { cn } from '@/utils/cn';
 
 interface SearchResultCardProps {
@@ -24,13 +25,14 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
   const fav = isFavourite(record.id);
   const alias = getAlias(record.id);
   const hasDiscrepancy = Boolean(record.discrepancies && record.discrepancies.length > 0);
+  const recordHref = getHrefForRecord(record.id);
 
   const handleCardClick = (e: React.MouseEvent) => {
     // If user clicked inside a button or link, don't trigger card navigation
     if ((e.target as HTMLElement).closest('button, a')) {
       return;
     }
-    navigate(`/medicament/${record.id}`);
+    navigate(recordHref);
   };
 
   const classificationLabel =
@@ -84,9 +86,16 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
 
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-semibold text-sm text-primary group-hover:underline truncate max-w-[180px] sm:max-w-none">
+              <a
+                href={recordHref}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(recordHref);
+                }}
+                className="font-semibold text-sm text-primary hover:underline truncate max-w-[180px] sm:max-w-none"
+              >
                 {record.brandName}
-              </span>
+              </a>
               <StatusBadge sourceList={record.sourceList} />
               {hasDiscrepancy && (
                 <span
@@ -197,8 +206,17 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
         {/* Brand & DCI */}
         <div className="min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h3 className="text-xl font-bold text-primary group-hover:underline break-words min-w-0">
-              {record.brandName}
+            <h3 className="text-xl font-bold text-primary break-words min-w-0">
+              <a
+                href={recordHref}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(recordHref);
+                }}
+                className="hover:underline"
+              >
+                {record.brandName}
+              </a>
             </h3>
             <span className="text-xs font-mono text-outline shrink-0">{record.registrationNumber}</span>
           </div>
@@ -248,10 +266,17 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
           <span>
             {record.provenance.sourceWorksheet} (Ligne {record.provenance.sourceRow})
           </span>
-          <span className="inline-flex items-center gap-1 text-primary font-medium group-hover:translate-x-1 transition-transform">
+          <a
+            href={recordHref}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(recordHref);
+            }}
+            className="inline-flex items-center gap-1 text-primary font-medium hover:translate-x-1 transition-transform"
+          >
             <span>{t.viewDetails}</span>
             <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </span>
+          </a>
         </div>
       </div>
     );
@@ -317,8 +342,17 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
 
         {/* Brand Name & Alias */}
         <div className="mb-2 min-w-0">
-          <h3 className="text-lg font-bold text-primary group-hover:underline break-words">
-            {record.brandName}
+          <h3 className="text-lg font-bold text-primary break-words">
+            <a
+              href={recordHref}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(recordHref);
+              }}
+              className="hover:underline"
+            >
+              {record.brandName}
+            </a>
           </h3>
           <p className="text-sm font-semibold text-on-surface mt-0.5 break-words">{record.dci}</p>
           {alias && (
@@ -351,10 +385,17 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
         <span className="font-mono text-[11px] text-outline truncate max-w-[200px] sm:max-w-none">
           N° {record.registrationNumber}
         </span>
-        <span className="inline-flex items-center gap-1 text-primary font-medium group-hover:translate-x-0.5 transition-transform text-xs shrink-0 ms-auto">
+        <a
+          href={recordHref}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(recordHref);
+          }}
+          className="inline-flex items-center gap-1 text-primary font-medium hover:translate-x-0.5 transition-transform text-xs shrink-0 ms-auto"
+        >
           <span>{t.viewDetails}</span>
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </span>
+        </a>
       </div>
     </div>
   );
