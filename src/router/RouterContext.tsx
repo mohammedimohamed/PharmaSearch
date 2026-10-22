@@ -64,8 +64,9 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [route, setRoute] = useState<RouteState>(() => parseCurrentLocation());
 
   useEffect(() => {
-    // 1. Check legacy hash migration and malformed hash cleanup on mount:
-    if (typeof window !== 'undefined') {
+    const normalizeLocation = () => {
+      if (typeof window === 'undefined') return;
+
       const hash = window.location.hash;
       if (hash) {
         const stripped = hash.replace(/^[#/]+/, '');
@@ -84,19 +85,21 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           const normalizedHash = `#/${stripped}`;
           window.history.replaceState(null, '', normalizedHash);
           setRoute(parseCurrentLocation());
+          return;
         }
       }
-    }
 
-    const handleLocationChange = () => {
       setRoute(parseCurrentLocation());
     };
 
-    window.addEventListener('hashchange', handleLocationChange);
-    window.addEventListener('popstate', handleLocationChange);
+    // Run on initial mount
+    normalizeLocation();
+
+    window.addEventListener('hashchange', normalizeLocation);
+    window.addEventListener('popstate', normalizeLocation);
     return () => {
-      window.removeEventListener('hashchange', handleLocationChange);
-      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', normalizeLocation);
+      window.removeEventListener('popstate', normalizeLocation);
     };
   }, []);
 
