@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-10-22T08:30:00Z",
+  "description": "PharmaSearch persistent SEO URL registry. Maps permanent URL keys to current source records with collision-free identity fingerprints.",
+  "entries": [
+    {
+      "urlKey": "5f9a078862",
+      "slug": "abilify-maintena-400-mg",
+      "canonicalPath": "/medicament/abilify-maintena-400-mg-5f9a078862/",
+      "recordId": "NOM-4460",
+      "sourceList": "NOMENCLATURE_ACTIVE",
+      "brandName": "ABILIFY MAINTENA",
+      "dci": "ARIPIPRAZOLE",
+      "dosage": "400 MG",
+      "form": "POUDRE ET SOLVANT POUR SUSP INJ A LIB PROL",
+      "packaging": "BOITE DE 01 SERINGUE",
+      "registrationNumber": "602/16 D 175/23",
+      "code": "16 D 175",
+      "fingerprint": "5f9a078862e42c9d9376af8183d4c30e5c0b29046d41e7e0db6021c02dd669a4"
+    },
+    {
+      "urlKey": "25271e978e",
+      "slug": "polaramine-5mg-ml",
+      "canonicalPath": "/medicament/polaramine-5mg-ml-25271e978e/",
+      "recordId": "NON-13",
+      "sourceList": "NON_RENOUVELE",
+      "brandName": "POLARAMINE",
+      "dci": "DEXCHLORPHENIRAMINE MALEATE",
+      "dosage": "5MG/ML",
+      "form": "SOL.INJ.",
+      "packaging": "B/05 AMP. DE 1ML",
+      "registrationNumber": "027/01 A 004/97",
+      "code": "01 A 004",
+      "fingerprint": "25271e978e16ee019f49042736fcf98fe7b56d40ca2fc51cf0fb204742aa9440"
+    },
+    {
+      "urlKey": "f82f512d54",
+      "slug": "astemizol-ratiopharm-10mg",
+      "canonicalPath": "/medicament/astemizol-ratiopharm-10mg-f82f512d54/",
+      "recordId": "RET-12",
+      "sourceList": "RETRAIT",
+      "brandName": "ASTEMIZOL RATIOPHARM",
+      "dci": "ASTEMIZOLE",
+      "dosage": "10MG",
+      "form": "GLES.",
+      "packaging": "B/20",
+      "registrationNumber": "156/01 A 001/99",
+      "code": "01 A 001",
+      "fingerprint": "f82f512d54f1b6ef821964bf6ec8a61320a1b2b04d6c728f9132779cc34e2244"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/context/I18nContext';
-import { useRouter } from '@/router/RouterContext';
+import { useRouter, resolveToRecordId } from '@/router/RouterContext';
 import { useData } from '@/context/DataContext';
 import { useFavourites } from '@/context/FavouritesContext';
 import { StatusBadge } from '@/components/common/StatusBadge';
@@ -12,10 +12,12 @@ export const DetailPage: React.FC = () => {
   const { getRecordById, getRelatedPresentations, getDiscrepantRecords, isLoading } = useData();
   const { isFavourite, toggleFavourite, getAlias, setAlias, removeAlias } = useFavourites();
 
-  // Extract ID from path (/medicament/NOM-123) or query param (?id=NOM-123)
-  const recordId = path.startsWith('/medicament/')
-    ? decodeURIComponent(path.replace('/medicament/', ''))
+  // Extract raw identifier from path (/medicament/NOM-123 or /medicament/slug-key/) or query param (?id=NOM-123)
+  const rawIdentifier = path.startsWith('/medicament/')
+    ? decodeURIComponent(path.replace('/medicament/', '').replace(/\/$/, ''))
     : getParam('id', '');
+
+  const recordId = resolveToRecordId(rawIdentifier);
 
   const record = getRecordById(recordId);
 
