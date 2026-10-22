@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/utils/seoRegistry';
 import { SearchResultCard } from '@/components/search/SearchResultCard';
 import { DetailPage } from '@/pages/DetailPage';
-import { RouterProvider } from '@/router/RouterContext';
+import { RouterProvider, useRouter } from '@/router/RouterContext';
 import { I18nProvider } from '@/context/I18nContext';
 import { FavouritesProvider } from '@/context/FavouritesContext';
 import { DataProvider } from '@/context/DataContext';
@@ -218,6 +218,84 @@ const mockDataset: NomenclatureDataset = {
       },
     },
     unregisteredRecord,
+    {
+      id: 'NOM-4378',
+      sourceList: 'NOMENCLATURE_ACTIVE',
+      registrationNumber: '414/16 D 103/08/16',
+      code: '16 D 103',
+      dci: 'ARIPIPRAZOLE',
+      brandName: 'ABILIFY',
+      form: 'COMPRIME',
+      dosage: '10MG',
+      packaging: 'B/28',
+      prescriptionSchedule: 'LISTE I',
+      rawPrescriptionSchedule: 'LISTE I',
+      hospitalUse: true,
+      officineUse: true,
+      laboratory: 'ABDI IBRAHIM OTSUKA ILAÇ SAN.VE TIC. A.Ş.',
+      country: 'TURQUIE',
+      initialRegistrationDate: {
+        raw: '17/05/2008',
+        isoDate: '2008-05-17',
+        formatted: '17/05/2008',
+        isInvalidDate: false,
+        isAdministrativeTag: false,
+      },
+      finalRegistrationDate: {
+        raw: '19/04/2016',
+        isoDate: '2016-04-19',
+        formatted: '19/04/2016',
+        isInvalidDate: false,
+        isAdministrativeTag: false,
+      },
+      shelfLife: '36 MOIS',
+      productClassification: 'RE',
+      manufacturingOrigin: 'I',
+      provenance: {
+        sourceWorksheet: 'Nomenclature Aout 2026',
+        sourceRow: 4378,
+        snapshotDate: '2026-08-31',
+      },
+    },
+    {
+      id: 'RET-137',
+      sourceList: 'RETRAIT',
+      registrationNumber: '188/03 B 005/99',
+      code: '03 B 005',
+      dci: 'PARACETAMOL',
+      brandName: 'PARACETAMOL',
+      form: 'COMP.',
+      dosage: '500MG',
+      packaging: 'B/20',
+      prescriptionSchedule: 'NON_SPECIFIE',
+      rawPrescriptionSchedule: '',
+      hospitalUse: true,
+      officineUse: true,
+      laboratory: 'LEK',
+      country: 'SLOVENIE',
+      initialRegistrationDate: {
+        raw: '16/03/1999',
+        isoDate: '1999-03-16',
+        formatted: '16/03/1999',
+        isInvalidDate: false,
+        isAdministrativeTag: false,
+      },
+      withdrawalDate: {
+        raw: '08/05/2011',
+        isoDate: '2011-05-08',
+        formatted: '08/05/2011',
+        isInvalidDate: false,
+        isAdministrativeTag: false,
+      },
+      withdrawalReason: "RETRAIT PAR LE MSPRH POUR INTERDICTION D'IMPORTATION",
+      productClassification: 'GE',
+      manufacturingOrigin: 'I',
+      provenance: {
+        sourceWorksheet: 'Retraits',
+        sourceRow: 137,
+        snapshotDate: '2026-08-31',
+      },
+    },
   ],
 };
 
@@ -529,6 +607,112 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
       );
       expect(html).toContain('404 — Produit ou référence introuvable');
       expect(html).toContain('Retour au registre national');
+    });
+  });
+
+  describe('4. Routing Normalization & Hash Defect Regression Tests', () => {
+    it('normalizes malformed double-hash #/#/medicament/NOM-4378 so DetailPage displays ABILIFY', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      render(
+        <TestWrapper initialHash="#/#/medicament/NOM-4378">
+          <DetailPage />
+        </TestWrapper>
+      );
+
+      // Must display the ABILIFY title and details without falling into not-found
+      expect(screen.getByRole('heading', { name: 'ABILIFY', level: 1 })).toBeInTheDocument();
+      expect(screen.queryByText(/Page introuvable/i)).toBeNull();
+      expect(screen.queryByText(/Médicament non trouvé/i)).toBeNull();
+    });
+
+    it('normalizes malformed double-hash #/#/medicament/RET-137 so DetailPage displays PARACETAMOL', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      render(
+        <TestWrapper initialHash="#/#/medicament/RET-137">
+          <DetailPage />
+        </TestWrapper>
+      );
+
+      // Must display the PARACETAMOL title and withdrawal classification
+      expect(screen.getByRole('heading', { name: 'PARACETAMOL', level: 1 })).toBeInTheDocument();
+      expect(screen.getByText(/Retiré/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Page introuvable/i)).toBeNull();
+    });
+
+    it('navigate normalizes /#/medicament/NOM-4378 to single hash #/medicament/NOM-4378 without double hash', () => {
+      let navFn: (to: string) => void = () => {};
+
+      const TestNavigator: React.FC = () => {
+        const { navigate } = useRouter();
+        navFn = navigate;
+        return null;
+      };
+
+      render(
+        <TestWrapper initialHash="#/">
+          <TestNavigator />
+        </TestWrapper>
+      );
+
+      act(() => {
+        navFn('/#/medicament/NOM-4378');
+      });
+      expect(window.location.hash).toBe('#/medicament/NOM-4378');
+      expect(window.location.hash).not.toContain('#/#');
+
+      act(() => {
+        navFn('medicament/RET-137');
+      });
+      expect(window.location.hash).toBe('#/medicament/RET-137');
+      expect(window.location.hash).not.toContain('#/#');
+    });
+
+    it('navigate with clean canonical path upgrades URL without hash, while legacy /#/ normalizes to single hash', () => {
+      let navFn: (to: string) => void = () => {};
+
+      const TestNavigator: React.FC = () => {
+        const { navigate } = useRouter();
+        navFn = navigate;
+        return null;
+      };
+
+      render(
+        <TestWrapper initialHash="#/">
+          <TestNavigator />
+        </TestWrapper>
+      );
+
+      // Clean canonical path (returned by getHrefForRecord for registered records)
+      act(() => {
+        navFn(getHrefForRecord('NOM-4460'));
+      });
+      expect(window.location.pathname).toBe(
+        '/medicament/abilify-maintena-400-mg-5f9a078862/'
+      );
+
+      // Legacy unregistered route normalizes to single hash
+      act(() => {
+        navFn('/#/medicament/NOM-4378');
+      });
+      expect(window.location.hash).toBe('#/medicament/NOM-4378');
+      expect(window.location.hash).not.toContain('#/#');
+    });
+
+    it('cleans up malformed #/#/ in browser hash on mount via history.replaceState', () => {
+      window.location.hash = '#/#/medicament/RET-137';
+
+      render(
+        <TestWrapper initialHash="#/#/medicament/RET-137">
+          <div data-testid="mounted" />
+        </TestWrapper>
+      );
+
+      expect(window.location.hash).toBe('#/medicament/RET-137');
+      expect(window.location.hash).not.toContain('#/#');
     });
   });
 });

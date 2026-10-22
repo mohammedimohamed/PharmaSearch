@@ -26,21 +26,24 @@ function parseCurrentLocation(): RouteState {
   const pathname = window.location.pathname;
 
   // 1. If hash contains a route path (e.g. #/recherche or #/medicament/...), hash takes priority
-  // as the primary user navigation mechanism in the SPA
-  if (hash && hash !== '#' && hash !== '#/') {
-    const clean = hash.replace(/^#\/?/, '');
-    const [hashPath, search] = clean.split('?');
-    const path = '/' + (hashPath || '');
+  // as the primary user navigation mechanism in the SPA.
+  // Robustly normalize any leading # and / characters (e.g. #/#/medicament, ##/recherche, #/medicament)
+  if (hash) {
+    const clean = hash.replace(/^[#/]+/, '');
+    if (clean) {
+      const [hashPath, search] = clean.split('?');
+      const path = '/' + (hashPath || '');
 
-    const params: Record<string, string> = {};
-    if (search) {
-      const sp = new URLSearchParams(search);
-      sp.forEach((value, key) => {
-        params[key] = value;
-      });
+      const params: Record<string, string> = {};
+      if (search) {
+        const sp = new URLSearchParams(search);
+        sp.forEach((value, key) => {
+          params[key] = value;
+        });
+      }
+
+      return { path, params, fullHash: hash };
     }
-
-    return { path, params, fullHash: hash };
   }
 
   // 2. If direct clean path is accessed (e.g. /medicament/...) and no conflicting hash
@@ -61,16 +64,25 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [route, setRoute] = useState<RouteState>(() => parseCurrentLocation());
 
   useEffect(() => {
-    // 1. Check legacy hash migration on mount:
-    // If user opened e.g. /#/medicament/NOM-4460, and NOM-4460 has a clean canonical path,
-    // upgrade URL cleanly using history.replaceState to the permanent clean URL
+    // 1. Check legacy hash migration and malformed hash cleanup on mount:
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
-      if (hash.startsWith('#/medicament/') || hash.startsWith('#medicament/')) {
-        const rawId = hash.replace(/^#\/?medicament\/?/, '').split('?')[0];
-        const canonical = RECORD_ID_TO_CANONICAL_PATH.get(rawId.toUpperCase());
-        if (canonical) {
-          window.history.replaceState(null, '', canonical);
+      if (hash) {
+        const stripped = hash.replace(/^[#/]+/, '');
+        if (stripped.startsWith('medicament/')) {
+          const rawId = stripped.replace(/^medicament\/?/, '').split('?')[0];
+          const canonical = RECORD_ID_TO_CANONICAL_PATH.get(rawId.toUpperCase());
+          if (canonical) {
+            window.history.replaceState(null, '', canonical);
+            setRoute(parseCurrentLocation());
+            return;
+          }
+        }
+
+        // Clean up malformed repeated hashes (e.g. #/#/medicament/RET-137 or ##/recherche)
+        if (hash.startsWith('#/#') || hash.startsWith('##') || hash.startsWith('#///')) {
+          const normalizedHash = `#/${stripped}`;
+          window.history.replaceState(null, '', normalizedHash);
           setRoute(parseCurrentLocation());
         }
       }
@@ -89,27 +101,31 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
 
   const navigate = useCallback((to: string, newParams?: Record<string, string | undefined>) => {
-    let cleanPath = to.startsWith('/') ? to : '/' + to;
+    // Strip leading hash symbols so cleanPath is always a normalized route path starting with '/'
+    const stripped = to.replace(/^[#/]+/, '');
+    const [pathPart, inlineSearch] = stripped.split('?');
+    let cleanPath = '/' + (pathPart || '');
     if (cleanPath === '//') cleanPath = '/';
 
-    const searchParams = new URLSearchParams();
+    const searchParams = new URLSearchParams(inlineSearch || '');
     if (newParams) {
       Object.entries(newParams).forEach(([k, v]) => {
         if (v !== undefined && v !== null && v !== '') {
           searchParams.set(k, String(v));
+        } else {
+          searchParams.delete(k);
         }
       });
     }
 
     const searchStr = searchParams.toString();
 
-    // Check if target is explicitly a clean registered medicine path (starts with /medicament/ and contains registered 10-hex key)
+    // Check if target is explicitly a clean registered medicine path
     const isCleanRegisteredPath =
       cleanPath.startsWith('/medicament/') &&
       !cleanPath.startsWith('/medicament/NOM-') &&
       !cleanPath.startsWith('/medicament/NON-') &&
-      !cleanPath.startsWith('/medicament/RET-') &&
-      !cleanPath.includes('/#/');
+      !cleanPath.startsWith('/medicament/RET-');
 
     if (isCleanRegisteredPath) {
       const finalUrl = `${cleanPath}${searchStr ? '?' + searchStr : ''}`;
@@ -131,6 +147,7 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           setRoute(parseCurrentLocation());
         } else {
           window.location.hash = newHash;
+          setRoute(parseCurrentLocation());
         }
       } else {
         setRoute(parseCurrentLocation());

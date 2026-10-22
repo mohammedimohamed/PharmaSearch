@@ -527,6 +527,7 @@ export const DetailPage: React.FC = () => {
                       href={relHref}
                       onClick={(e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         navigate(relHref);
                       }}
                       className="font-bold text-xs text-primary hover:underline truncate"
