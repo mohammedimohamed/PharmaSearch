@@ -17,6 +17,21 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 const AppContent: React.FC = () => {
   const { path } = useRouter();
 
+  // Route-aware document title management for non-detail pages
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (path === '/' || path === '') {
+      document.title = 'PharmaSearch — Registre Pharmaceutique National';
+    } else if (path.startsWith('/recherche')) {
+      document.title = 'Recherche | PharmaSearch';
+    } else if (path.startsWith('/favoris')) {
+      document.title = 'Mes Favoris | PharmaSearch';
+    } else if (!path.startsWith('/medicament')) {
+      document.title = 'Produit ou page introuvable | PharmaSearch';
+    }
+  }, [path]);
+
   // Route matching
   let pageContent: React.ReactNode;
   if (path === '/' || path === '') {
