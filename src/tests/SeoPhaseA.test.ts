@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 
@@ -56,14 +56,14 @@ describe('SEO Phase A: Foundations, Canonicalization & Metadata', () => {
     expect(parsed.sponsor.name).toBe('TechWise Advisors');
   });
 
-  it('2. public/robots.txt allows general crawling and contains no premature sitemap or hash rules', () => {
+  it('2. public/robots.txt allows general crawling and declares the catalogue sitemap (now generated) and no hash rules', () => {
     expect(fs.existsSync(robotsTxtPath)).toBe(true);
     const robots = fs.readFileSync(robotsTxtPath, 'utf8');
 
     expect(robots).toContain('User-agent: *');
     expect(robots).toContain('Allow: /');
-    // Pre-mature declarations must NOT be present
-    expect(robots.toLowerCase()).not.toContain('sitemap');
+    // Sitemap is declared only because it is generated at build time (see SeoPhaseC catalogue tests)
+    expect(robots).toContain('Sitemap: https://pharmasearch.indz.net/sitemap.xml');
     expect(robots).not.toContain('#');
   });
 

@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import fs from 'fs';
 import path from 'path';
 import {
-  SEO_REGISTRY,
   extractUrlKeyFromPath,
   resolveToRecordId,
   getCanonicalPathForRecord,
   getHrefForRecord,
+  RECORD_ID_TO_CANONICAL_PATH,
 } from '@/utils/seoRegistry';
 import { SearchResultCard } from '@/components/search/SearchResultCard';
 import { DetailPage } from '@/pages/DetailPage';
@@ -68,7 +68,7 @@ const registeredRecord: PharmaceuticalRecord = {
 };
 
 const unregisteredRecord: PharmaceuticalRecord = {
-  id: 'NOM-17',
+  id: 'NOM-990017',
   sourceList: 'NOMENCLATURE_ACTIVE',
   registrationNumber: '352/01 A 003/06/22',
   code: '01 A 003',
@@ -321,13 +321,14 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
   const rootDir = path.resolve(__dirname, '../../');
   const nomenclaturePath = path.join(rootDir, 'public/data/nomenclature.json');
   const distDir = path.join(rootDir, 'dist');
+  const SEO_REGISTRY: { entries: Array<{ urlKey: string; recordId: string; brandName: string; sourceList: string; registrationNumber: string; code: string; fingerprint: string; canonicalPath: string }> } = JSON.parse(fs.readFileSync(path.join(rootDir, 'seo/seo-url-registry.json'), 'utf8'));
 
   describe('1. SEO URL Registry & Helper Functions', () => {
-    it('contains exactly the 3 valid prototype entries with valid structure', () => {
-      expect(SEO_REGISTRY.entries.length).toBe(3);
+    it('contains one unique entry per source record (full catalogue) including the 3 prototype entries', () => {
+      expect(SEO_REGISTRY.entries.length).toBe(9595);
       const keys = SEO_REGISTRY.entries.map((e) => e.urlKey);
       const uniqueKeys = new Set(keys);
-      expect(uniqueKeys.size).toBe(3);
+      expect(uniqueKeys.size).toBe(9595);
 
       const recordIds = SEO_REGISTRY.entries.map((e) => e.recordId);
       expect(recordIds).toContain('NOM-4460');
@@ -389,8 +390,8 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
       expect(getCanonicalPathForRecord('RET-12')).toBe(
         '/medicament/astemizol-ratiopharm-10mg-f82f512d54/'
       );
-      expect(getCanonicalPathForRecord('NOM-17')).toBeNull();
-      expect(getCanonicalPathForRecord('NOM-3277')).toBeNull();
+      expect(getCanonicalPathForRecord('NOM-990017')).toBeNull();
+      expect(getCanonicalPathForRecord('NOM-993277')).toBeNull();
     });
 
     it('getHrefForRecord returns clean canonical path for registered records, and supported hash URL otherwise', () => {
@@ -404,9 +405,9 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
         '/medicament/astemizol-ratiopharm-10mg-f82f512d54/'
       );
 
-      // Unregistered records must return hash-based URLs, NOT broken /medicament/NOM-17 clean paths
-      expect(getHrefForRecord('NOM-17')).toBe('/#/medicament/NOM-17');
-      expect(getHrefForRecord('NOM-3277')).toBe('/#/medicament/NOM-3277');
+      // Unregistered records must return hash-based URLs, NOT broken /medicament/NOM-990017 clean paths
+      expect(getHrefForRecord('NOM-990017')).toBe('/#/medicament/NOM-990017');
+      expect(getHrefForRecord('NOM-993277')).toBe('/#/medicament/NOM-993277');
     });
   });
 
@@ -444,11 +445,11 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
 
       const brandLink = screen.getByRole('link', { name: /ARTIZ/i });
       expect(brandLink).toBeInTheDocument();
-      expect(brandLink).toHaveAttribute('href', '/#/medicament/NOM-17');
+      expect(brandLink).toHaveAttribute('href', '/#/medicament/NOM-990017');
 
       const detailsLink = screen.getByRole('link', { name: /Consulter la fiche/i });
       expect(detailsLink).toBeInTheDocument();
-      expect(detailsLink).toHaveAttribute('href', '/#/medicament/NOM-17');
+      expect(detailsLink).toHaveAttribute('href', '/#/medicament/NOM-990017');
     });
 
     it('SearchResultCard in compact and comfortable modes also renders genuine anchors', () => {
@@ -711,8 +712,10 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
         </TestWrapper>
       );
 
-      expect(window.location.hash).toBe('#/medicament/RET-137');
-      expect(window.location.hash).not.toContain('#/#');
+      // RET-137 now has a registered clean URL: malformed legacy hash migrates straight to it
+      expect(window.location.pathname).toBe(RECORD_ID_TO_CANONICAL_PATH.get('RET-137'));
+      expect(window.location.hash).toBe('');
+      expect(window.location.href).not.toContain('#/#');
     });
   });
 });

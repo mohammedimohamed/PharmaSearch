@@ -1,29 +1,9 @@
-import registryData from '@/data/seo-url-registry.json';
-
-export interface SeoRegistryEntry {
-  urlKey: string;
-  slug: string;
-  canonicalPath: string;
-  recordId: string;
-  sourceList: string;
-  brandName: string;
-  dci: string;
-  dosage: string;
-  form: string;
-  packaging: string;
-  registrationNumber: string;
-  code: string;
-  fingerprint: string;
-}
-
-export interface SeoRegistry {
-  version: string;
-  generatedAt: string;
-  description: string;
-  entries: SeoRegistryEntry[];
-}
-
-export const SEO_REGISTRY: SeoRegistry = registryData as SeoRegistry;
+﻿/**
+ * Compact public URL map: recordId (e.g. "NOM-4460") -> "slug-urlKey".
+ * Generated from the committed persistent registry (seo/seo-url-registry.json)
+ * by scripts/generate-seo-registry.ts. The recordId is the current source-row
+ * identifier; the urlKey is the permanent public URL key and is independent of it.
+ */
 
 // Map from public URL key (e.g. "5f9a078862") -> recordId ("NOM-4460")
 export const KEY_TO_RECORD_ID = new Map<string, string>();
@@ -31,14 +11,17 @@ export const KEY_TO_RECORD_ID = new Map<string, string>();
 // Map from recordId ("NOM-4460") -> canonicalPath ("/medicament/abilify-maintena-400-mg-5f9a078862/")
 export const RECORD_ID_TO_CANONICAL_PATH = new Map<string, string>();
 
-// Map from recordId ("NOM-4460") -> SeoRegistryEntry
-export const RECORD_ID_TO_ENTRY = new Map<string, SeoRegistryEntry>();
-
-SEO_REGISTRY.entries.forEach((entry) => {
-  KEY_TO_RECORD_ID.set(entry.urlKey, entry.recordId);
-  RECORD_ID_TO_CANONICAL_PATH.set(entry.recordId, entry.canonicalPath);
-  RECORD_ID_TO_ENTRY.set(entry.recordId, entry);
-});
+/**
+ * Populates the lookup maps. In the app this is called once before first render with the lazily
+ * loaded map chunk (see main.tsx) so the ~400 kB map is not part of the main bundle.
+ */
+export function populateSeoUrlMap(urlMap: Record<string, string>): void {
+  for (const [recordId, slugKey] of Object.entries(urlMap)) {
+    const urlKey = slugKey.slice(-10);
+    KEY_TO_RECORD_ID.set(urlKey, recordId);
+    RECORD_ID_TO_CANONICAL_PATH.set(recordId, `/medicament/${slugKey}/`);
+  }
+}
 
 /**
  * Extracts a public URL key from a route path.
@@ -61,7 +44,8 @@ export function extractUrlKeyFromPath(path: string): string | null {
 
 /**
  * Resolves any medicament identifier (clean URL key, canonical path, or legacy recordId)
- * to the authoritative current recordId.
+ * to the authoritative current recordId. Unknown identifiers are returned unchanged so
+ * that they never resolve to another record.
  */
 export function resolveToRecordId(identifier: string): string {
   if (!identifier) return '';

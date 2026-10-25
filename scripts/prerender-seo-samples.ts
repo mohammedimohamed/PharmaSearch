@@ -66,12 +66,16 @@ export function generateMedicineHtml(
   record: PharmaceuticalRecord,
   entry: SeoRegistryEntry
 ): string {
-  const brand = record.brandName || 'Médicament';
-  const dosage = record.dosage ? ` — ${record.dosage}` : '';
+  const brand = (record.brandName || '').replace(/\s+/g, ' ').trim() || 'Médicament';
+  const norm = (v: string | null | undefined) => (v ?? '').replace(/\s+/g, ' ').trim();
+  const dosageFull = norm(record.dosage);
+  const dosage = dosageFull ? ` — ${dosageFull}` : '';
+  // Titles stay concise: very long multi-component dosages are shortened in <title>/social titles only
+  const dosageShort = dosageFull.length > 40 ? ` — ${dosageFull.slice(0, 40).trim()}…` : dosage;
   const form = record.form ? ` (${record.form})` : '';
   const dci = record.dci || '';
 
-  const title = `${brand}${dosage} | PharmaSearch`;
+  const title = `${brand}${dosageShort} | PharmaSearch`;
   const canonicalUrl = `https://pharmasearch.indz.net${entry.canonicalPath}`;
 
   const listLabel =
@@ -83,7 +87,27 @@ export function generateMedicineHtml(
       ? 'Retiré'
       : record.sourceList;
 
-  const description = `${brand} (${dci}) : ${record.dosage || ''} ${record.form || ''}, conditionnement ${record.packaging || ''}. Statut : ${listLabel}. Source officielle : Nomenclature Nationale au 31 Août 2026.`;
+  const specParts = [record.dosage, record.form].filter(Boolean).join(', ');
+  const dateParts: string[] = [];
+  if (record.initialRegistrationDate?.formatted) {
+    dateParts.push(`enregistrement initial ${record.initialRegistrationDate.formatted}`);
+  }
+  if (record.withdrawalDate?.formatted) {
+    dateParts.push(`date de retrait ${record.withdrawalDate.formatted}`);
+  }
+  const descriptionRaw = [
+    `${brand}${dci ? ` (${dci})` : ''}${specParts ? ` : ${specParts}` : ''}`,
+    record.packaging ? `conditionnement ${record.packaging}` : '',
+    dateParts.join(', '),
+    `Liste officielle : ${listLabel}`,
+    'Source : Nomenclature Nationale, situation au 31 Août 2026 (ne constitue pas une confirmation de disponibilité commerciale)',
+  ]
+    .filter(Boolean)
+    .join(', ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const description =
+    descriptionRaw.length > 300 ? `${descriptionRaw.slice(0, 297).trim()}…` : `${descriptionRaw}.`;
 
   // Server-rendered crawlable HTML payload to inject inside <div id="root">
   const noscriptSummaryHtml = `
@@ -229,64 +253,105 @@ export function generate404Html(templateHtml: string): string {
   return html;
 }
 
-export function runPrerenderSamples(distDir = path.resolve('dist')) {
+
+
+export interface PrerenderSummary {
+  sourceRecords: number;
+  registryEntries: number;
+  pagesGenerated: number;
+  sitemapUrls: number;
+  totalBytes: number;
+  seconds: number;
+}
+
+const SITE_ORIGIN = 'https://pharmasearch.indz.net';
+
+export function buildSitemapXml(entries: SeoRegistryEntry[]): string {
+  const urls = [`${SITE_ORIGIN}/`, ...entries.map((e) => `${SITE_ORIGIN}${e.canonicalPath}`)];
+  // No <lastmod>: no verified per-record modification date exists in the source.
+  const body = urls.map((u) => `  <url><loc>${escapeHtml(u)}</loc></url>`).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+/**
+ * Full-catalogue static generation. Fails loudly (throws) on any count mismatch,
+ * missing/extra registry entry, duplicate path, or missing source record.
+ */
+export function runPrerenderCatalogue(
+  distDir = path.resolve('dist'),
+  expectedRecords?: number
+): PrerenderSummary {
+  const started = Date.now();
   const indexHtmlPath = path.join(distDir, 'index.html');
   if (!fs.existsSync(indexHtmlPath)) {
     throw new Error(`dist/index.html not found at ${indexHtmlPath}. Run build first.`);
   }
-
   const templateHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
-  // Load nomenclature data
-  const dataJsonPath = path.resolve('public/data/nomenclature.json');
-  const data = JSON.parse(fs.readFileSync(dataJsonPath, 'utf8'));
-  const recordsMap = new Map<string, PharmaceuticalRecord>();
-  data.records.forEach((r: PharmaceuticalRecord) => {
-    recordsMap.set(r.id, r);
-  });
-
-  // Load SEO Registry
-  const registryPath = path.resolve('src/data/seo-url-registry.json');
-  const registry: SeoRegistry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-
-  console.log(`Prerendering ${registry.entries.length} valid sample medicine pages...`);
-
-  let totalBytes = 0;
-  const generatedFiles: string[] = [];
-
-  for (const entry of registry.entries) {
-    const record = recordsMap.get(entry.recordId);
-    if (!record) {
-      throw new Error(`Record ${entry.recordId} referenced in SEO registry not found in dataset!`);
-    }
-
-    const pageHtml = generateMedicineHtml(templateHtml, record, entry);
-
-    // Target path: dist/medicament/<slug-urlKey>/index.html
-    // e.g. canonicalPath is /medicament/abilify-maintena-400-mg-5f9a078862/
-    const relativeFolder = entry.canonicalPath.replace(/^\//, '').replace(/\/$/, '');
-    const outFolder = path.join(distDir, relativeFolder);
-    fs.mkdirSync(outFolder, { recursive: true });
-
-    const outFilePath = path.join(outFolder, 'index.html');
-    fs.writeFileSync(outFilePath, pageHtml, 'utf8');
-
-    const bytes = Buffer.byteLength(pageHtml, 'utf8');
-    totalBytes += bytes;
-    generatedFiles.push(outFilePath);
-    console.log(`✓ Generated ${entry.canonicalPath} (${bytes} bytes) for ${record.id} [${record.brandName}]`);
+  const data = JSON.parse(fs.readFileSync(path.resolve('public/data/nomenclature.json'), 'utf8'));
+  const records: PharmaceuticalRecord[] = data.records;
+  const expected = expectedRecords ?? data.metadata?.totalSourceRows;
+  if (records.length !== expected) {
+    throw new Error(`Unexpected source record count: ${records.length} (expected ${expected})`);
   }
 
-  // Generate 404.html in dist
-  const notFoundHtml = generate404Html(templateHtml);
-  const notFoundPath = path.join(distDir, '404.html');
-  fs.writeFileSync(notFoundPath, notFoundHtml, 'utf8');
-  console.log(`✓ Generated 404.html (${Buffer.byteLength(notFoundHtml, 'utf8')} bytes)`);
+  const registry: SeoRegistry = JSON.parse(
+    fs.readFileSync(path.resolve('seo/seo-url-registry.json'), 'utf8')
+  );
+  if (registry.entries.length !== records.length) {
+    throw new Error(
+      `Registry entry count ${registry.entries.length} != source record count ${records.length}. Run: npx tsx scripts/generate-seo-registry.ts`
+    );
+  }
 
-  console.log(`Prerender complete. Generated ${generatedFiles.length} pages + 404. Total HTML payload: ${(totalBytes / 1024).toFixed(2)} KB.`);
+  const entryById = new Map<string, SeoRegistryEntry>();
+  const paths = new Set<string>();
+  for (const e of registry.entries) {
+    if (entryById.has(e.recordId)) throw new Error(`Duplicate registry entry for ${e.recordId}`);
+    if (paths.has(e.canonicalPath)) throw new Error(`Duplicate canonical path ${e.canonicalPath}`);
+    entryById.set(e.recordId, e);
+    paths.add(e.canonicalPath);
+  }
+
+  console.log(`Prerendering ${records.length} medicine pages...`);
+  let totalBytes = 0;
+  let generated = 0;
+  for (const record of records) {
+    const entry = entryById.get(record.id);
+    if (!entry) throw new Error(`Source record ${record.id} has no registry entry`);
+
+    const pageHtml = generateMedicineHtml(templateHtml, record, entry);
+    const outFolder = path.join(distDir, entry.canonicalPath.replace(/^\//, '').replace(/\/$/, ''));
+    fs.mkdirSync(outFolder, { recursive: true });
+    fs.writeFileSync(path.join(outFolder, 'index.html'), pageHtml, 'utf8');
+    totalBytes += Buffer.byteLength(pageHtml, 'utf8');
+    generated++;
+  }
+  if (generated !== records.length) throw new Error('Generated page count mismatch');
+
+  const notFoundHtml = generate404Html(templateHtml);
+  fs.writeFileSync(path.join(distDir, '404.html'), notFoundHtml, 'utf8');
+
+  const sitemap = buildSitemapXml(registry.entries);
+  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap, 'utf8');
+
+  const seconds = (Date.now() - started) / 1000;
+  const summary: PrerenderSummary = {
+    sourceRecords: records.length,
+    registryEntries: registry.entries.length,
+    pagesGenerated: generated,
+    sitemapUrls: registry.entries.length,
+    totalBytes,
+    seconds,
+  };
+  console.log(
+    `Prerender complete. ${generated} pages + 404 + sitemap (${registry.entries.length} medicine URLs). ` +
+      `HTML payload: ${(totalBytes / 1024 / 1024).toFixed(2)} MB in ${seconds.toFixed(1)}s.`
+  );
+  return summary;
 }
 
 // If executed directly via node/ts-node
 if (process.argv[1] && process.argv[1].includes('prerender-seo-samples')) {
-  runPrerenderSamples();
+  runPrerenderCatalogue();
 }

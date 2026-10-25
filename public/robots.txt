@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://pharmasearch.indz.net/sitemap.xml
+
