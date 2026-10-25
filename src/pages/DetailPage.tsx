@@ -22,6 +22,20 @@ export const DetailPage: React.FC = () => {
 
   const record = getRecordById(recordId);
 
+  // Update browser tab title dynamically on client-side navigation
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (record) {
+      const brand = (record.brandName || '').replace(/\s+/g, ' ').trim() || 'Médicament';
+      const dosage = (record.dosage || '').replace(/\s+/g, ' ').trim();
+      const dosageShort = dosage.length > 40 ? ` — ${dosage.slice(0, 40).trim()}…` : dosage ? ` — ${dosage}` : '';
+      document.title = `${brand}${dosageShort} | PharmaSearch`;
+    } else if (!isLoading) {
+      document.title = 'Produit ou page introuvable | PharmaSearch';
+    }
+  }, [record, isLoading]);
+
   // Alias state for editing
   const existingAlias = getAlias(recordId) || '';
   const [aliasInput, setAliasInput] = useState(existingAlias);

@@ -718,4 +718,157 @@ describe('SEO Phase B & B.1: Clean Medicine URLs, Registry & Internal Links', ()
       expect(window.location.href).not.toContain('#/#');
     });
   });
+
+  describe('5. Client-Side Page Title & Browser History Navigation', () => {
+    it('updates document.title immediately when navigating from search/home to medicine detail', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      // Start on home route
+      window.location.hash = '#/';
+      window.history.replaceState(null, '', '/');
+
+      render(<App />);
+
+      expect(document.title).toBe('PharmaSearch — Registre Pharmaceutique National');
+
+      // Navigate to registered medicine
+      const testLink = getHrefForRecord('NOM-4460');
+      act(() => {
+        window.history.pushState(null, '', testLink);
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
+
+      expect(document.title).toBe('ABILIFY MAINTENA — 400 MG | PharmaSearch');
+    });
+
+    it('updates document.title when navigating between medicine A and medicine B', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      // Start on medicine A
+      window.history.replaceState(null, '', getHrefForRecord('NOM-4460'));
+      render(<App />);
+
+      expect(document.title).toBe('ABILIFY MAINTENA — 400 MG | PharmaSearch');
+
+      // Navigate to medicine B (ASTEMIZOL RATIOPHARM - present in mockDataset)
+      act(() => {
+        window.history.pushState(null, '', getHrefForRecord('RET-12'));
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
+
+      expect(document.title).toBe('ASTEMIZOL RATIOPHARM — 10MG | PharmaSearch');
+    });
+
+    it('restores non-detail title when navigating back from detail to search/home', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      // Start on medicine
+      window.history.replaceState(null, '', getHrefForRecord('NOM-4460'));
+      render(<App />);
+
+      expect(document.title).toBe('ABILIFY MAINTENA — 400 MG | PharmaSearch');
+
+      // Navigate to /recherche
+      act(() => {
+        window.location.hash = '#/recherche';
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+      });
+
+      expect(document.title).toBe('Recherche | PharmaSearch');
+
+      // Navigate to /favoris
+      act(() => {
+        window.location.hash = '#/favoris';
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+      });
+
+      expect(document.title).toBe('Mes Favoris | PharmaSearch');
+    });
+
+    it('sets not-found title for invalid or non-existent medicine route', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      window.history.replaceState(null, '', '/medicament/produit-inconnu-999999/');
+      render(<App />);
+
+      expect(document.title).toBe('Produit ou page introuvable | PharmaSearch');
+    });
+
+    it('synchronizes route state and title across simulated browser back/forward (popstate and hashchange)', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      // 1. Initial page: /
+      window.history.replaceState(null, '', '/');
+      window.location.hash = '';
+      const { unmount } = render(<App />);
+
+      expect(document.title).toBe('PharmaSearch — Registre Pharmaceutique National');
+
+      // 2. Forward to medicine detail
+      act(() => {
+        window.history.pushState(null, '', getHrefForRecord('NOM-4460'));
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
+      expect(document.title).toBe('ABILIFY MAINTENA — 400 MG | PharmaSearch');
+
+      // 3. Back to home
+      act(() => {
+        window.history.pushState(null, '', '/');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
+      expect(document.title).toBe('PharmaSearch — Registre Pharmaceutique National');
+
+      // 4. Forward to search hash
+      act(() => {
+        window.location.hash = '#/recherche';
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+      });
+      expect(document.title).toBe('Recherche | PharmaSearch');
+
+      unmount();
+    });
+
+    it('migrates legacy hash route and sets title to resolved medicine', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      window.location.hash = '#/medicament/NOM-4460';
+      render(<App />);
+
+      // Should have migrated to canonical path and updated title
+      expect(window.location.pathname).toBe('/medicament/abilify-maintena-400-mg-5f9a078862/');
+      expect(document.title).toBe('ABILIFY MAINTENA — 400 MG | PharmaSearch');
+    });
+
+    it('normalizes malformed repeated hash #/#/medicament/RET-137 and updates title', async () => {
+      const { searchService } = await import('@/services/searchService');
+      searchService.initFromDataset(mockDataset);
+
+      const { App } = await import('@/App');
+
+      window.location.hash = '#/#/medicament/RET-137';
+      render(<App />);
+
+      expect(window.location.hash).toBe('');
+      expect(window.location.pathname).toContain('paracetamol-');
+      expect(document.title).toContain('PARACETAMOL');
+    });
+  });
 });
