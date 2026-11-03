@@ -46,3 +46,6 @@ scratch/
 screenshots/
 *.log
 temp_*
+
+# Private B2B Enterprise Reports (Never commit or ship)
+reports/
