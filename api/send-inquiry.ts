@@ -52,12 +52,13 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       });
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
+    const resendApiKey = process.env.RESEND_API_KEY || process.env.RESEND_APT_KEY;
     const adminEmail = process.env.NOTIFICATION_EMAIL || 'contact@techwise-dz.com';
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'PharmaSearch B2B <onboarding@resend.dev>';
 
     // If Resend API Key is configured in environment, dispatch actual emails
     if (resendApiKey) {
+      console.log(`[Resend Dispatching]: from=${fromEmail}, admin=${adminEmail}, visitor=${email}`);
       const interestsFormatted = interests.length > 0 ? interests.join(', ') : 'Étude générale du marché';
       const isAr = language === 'ar';
 
@@ -145,8 +146,10 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       ]);
 
       if (!adminRes.ok || !visitorRes.ok) {
-        const errText = await adminRes.text();
-        console.error('[Resend Error]', errText);
+        const adminErr = !adminRes.ok ? await adminRes.text() : 'OK';
+        const visitorErr = !visitorRes.ok ? await visitorRes.text() : 'OK';
+        console.error('[Resend Error Admin]:', adminRes.status, adminErr);
+        console.error('[Resend Error Visitor]:', visitorRes.status, visitorErr);
         // Fall back gracefully
         return res.status(200).json({
           success: true,
@@ -155,6 +158,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
         });
       }
 
+      console.log('[Resend Success]: Emails dispatched to admin and visitor.');
       return res.status(200).json({
         success: true,
         method: 'resend',
@@ -163,7 +167,15 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     }
 
     // Offline / Local development fallback when RESEND_API_KEY is not configured
-    console.log('[Inquiry Received - Local Mode]:', { name, company, email, phone, interests, questions });
+    console.log('[Inquiry Received - Local Mode / Missing RESEND_API_KEY]:', {
+      name,
+      company,
+      email,
+      phone,
+      interests,
+      questions,
+      hasResendKey: Boolean(resendApiKey),
+    });
     return res.status(200).json({
       success: true,
       method: 'local_fallback',
