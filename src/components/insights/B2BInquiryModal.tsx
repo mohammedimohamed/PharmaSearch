@@ -103,21 +103,21 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
       dir={isAr ? 'rtl' : 'ltr'}
       role="dialog"
       aria-modal="true"
       aria-labelledby="inquiry-modal-title"
     >
       <div
-        className="relative w-full max-w-xl bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-2xl p-5 sm:p-7 space-y-6 my-8 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-3xl bg-surface-container-lowest border border-outline-variant/30 rounded-3xl shadow-2xl p-6 sm:p-9 space-y-7 my-8 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 end-4 p-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors cursor-pointer"
+          className="absolute top-5 end-5 p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors cursor-pointer"
           aria-label={t.inquiryCloseButton}
         >
           <X className="w-5 h-5" />
@@ -125,38 +125,38 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
 
         {status === 'success' ? (
           /* SUCCESS CONFIRMATION STATE */
-          <div className="py-6 text-center space-y-5 animate-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
-              <CheckCircle2 className="w-8 h-8" />
+          <div className="py-8 text-center space-y-6 animate-in zoom-in-95 duration-200">
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
+              <CheckCircle2 className="w-10 h-10" />
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-on-surface">
+            <div className="space-y-2.5">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
                 {t.inquirySuccessTitle}
               </h3>
-              <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed max-w-md mx-auto">
+              <p className="text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-lg mx-auto">
                 {t.inquirySuccessMessage}
               </p>
             </div>
 
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
               <a
                 href="https://www.linkedin.com/company/techwiseadvisors"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white font-semibold text-sm shadow-xs transition-colors"
               >
                 <Linkedin className="w-4 h-4" />
                 <span>TechWise Advisors sur LinkedIn</span>
-                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                <ExternalLink className="w-4 h-4 opacity-80" />
               </a>
 
               {mailtoFallbackUrl && (
                 <a
                   href={mailtoFallbackUrl}
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-xs font-medium text-on-surface transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-sm font-medium text-on-surface transition-colors"
                 >
-                  <Mail className="w-3.5 h-3.5 text-primary" />
+                  <Mail className="w-4 h-4 text-primary" />
                   <span>{isAr ? 'فتح بريدك الإلكتروني' : 'Ouvrir mon email'}</span>
                 </a>
               )}
@@ -165,7 +165,7 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 px-6 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-xs font-semibold text-on-surface transition-colors cursor-pointer"
+              className="mt-4 px-7 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs sm:text-sm font-semibold text-on-surface transition-colors cursor-pointer"
             >
               {t.inquiryCloseButton}
             </button>
@@ -173,31 +173,31 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
         ) : (
           /* FORM ENTRY STATE */
           <>
-            <div className="space-y-1.5 pe-6">
-              <span className="text-[11px] font-bold text-primary uppercase tracking-wider">
+            <div className="space-y-2 pe-8">
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
                 TechWise Advisors DZ
               </span>
-              <h2 id="inquiry-modal-title" className="text-xl sm:text-2xl font-extrabold text-on-surface">
+              <h2 id="inquiry-modal-title" className="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
                 {t.inquiryModalTitle}
               </h2>
-              <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+              <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed max-w-2xl">
                 {t.inquiryModalSubtitle}
               </p>
             </div>
 
             {errorMessage && (
-              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 text-rose-700 dark:text-rose-400 text-xs flex items-center gap-2">
+              <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 text-rose-700 dark:text-rose-400 text-sm flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            <form onSubmit={handleSubmit} className="space-y-5 text-sm">
               {/* Row 1: Name & Company */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div className="space-y-1">
-                  <label className="font-semibold text-on-surface flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-primary" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs sm:text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                    <User className="w-4 h-4 text-primary" />
                     <span>{t.inquiryNameLabel} *</span>
                   </label>
                   <input
@@ -206,13 +206,13 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t.inquiryNamePlaceholder}
-                    className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface outline-none transition-all"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-on-surface outline-none transition-all text-sm"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-semibold text-on-surface flex items-center gap-1.5">
-                    <Building2 className="w-3.5 h-3.5 text-primary" />
+                <div className="space-y-1.5">
+                  <label className="text-xs sm:text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                    <Building2 className="w-4 h-4 text-primary" />
                     <span>{t.inquiryCompanyLabel} *</span>
                   </label>
                   <input
@@ -221,16 +221,16 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder={t.inquiryCompanyPlaceholder}
-                    className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface outline-none transition-all"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-on-surface outline-none transition-all text-sm"
                   />
                 </div>
               </div>
 
               {/* Row 2: Email & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div className="space-y-1">
-                  <label className="font-semibold text-on-surface flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-primary" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs sm:text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                    <Mail className="w-4 h-4 text-primary" />
                     <span>{t.inquiryEmailLabel} *</span>
                   </label>
                   <input
@@ -239,13 +239,13 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={t.inquiryEmailPlaceholder}
-                    className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface outline-none transition-all"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-on-surface outline-none transition-all text-sm"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-semibold text-on-surface flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-primary" />
+                <div className="space-y-1.5">
+                  <label className="text-xs sm:text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                    <Phone className="w-4 h-4 text-primary" />
                     <span>{t.inquiryPhoneLabel} *</span>
                   </label>
                   <input
@@ -254,17 +254,17 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder={t.inquiryPhonePlaceholder}
-                    className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface outline-none transition-all"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-on-surface outline-none transition-all text-sm"
                   />
                 </div>
               </div>
 
-              {/* Interests Checkboxes */}
-              <div className="space-y-2 pt-1">
-                <label className="font-bold text-on-surface block">
+              {/* Interests Checkboxes - 2 columns grid on larger screens */}
+              <div className="space-y-2.5 pt-1">
+                <label className="text-xs sm:text-sm font-bold text-on-surface block">
                   {t.inquiryInterestsTitle}
                 </label>
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     t.inquiryInterestExcel,
                     t.inquiryInterestImportOnly,
@@ -273,15 +273,15 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                   ].map((item) => (
                     <label
                       key={item}
-                      className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-surface-container/60 cursor-pointer border border-outline-variant/20 transition-colors"
+                      className="flex items-start gap-3 p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary/40 hover:bg-surface-container/60 cursor-pointer transition-all"
                     >
                       <input
                         type="checkbox"
                         checked={interests.includes(item)}
                         onChange={() => toggleInterest(item)}
-                        className="mt-0.5 rounded text-primary focus:ring-primary border-outline-variant"
+                        className="w-4 h-4 mt-0.5 rounded text-primary focus:ring-primary border-outline-variant cursor-pointer"
                       />
-                      <span className="text-[11px] text-on-surface leading-tight select-none">
+                      <span className="text-xs sm:text-sm text-on-surface leading-snug select-none font-medium">
                         {item}
                       </span>
                     </label>
@@ -290,33 +290,33 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
               </div>
 
               {/* Notes / Questions Textarea */}
-              <div className="space-y-1 pt-1">
-                <label className="font-semibold text-on-surface flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-primary" />
+              <div className="space-y-1.5 pt-1">
+                <label className="text-xs sm:text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                  <MessageSquare className="w-4 h-4 text-primary" />
                   <span>{t.inquiryQuestionsLabel}</span>
                 </label>
                 <textarea
-                  rows={2}
+                  rows={3}
                   value={questions}
                   onChange={(e) => setQuestions(e.target.value)}
                   placeholder={t.inquiryQuestionsPlaceholder}
-                  className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface outline-none transition-all text-xs resize-none"
+                  className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-on-surface outline-none transition-all text-sm resize-none"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p className="text-[10px] text-on-surface-variant">
+              <div className="pt-3 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/20">
+                <p className="text-xs text-on-surface-variant">
                   {isAr
                     ? 'بياناتكم محمية ومخصصة للتواصل المهني فقط.'
                     : 'Vos informations sont traitées de manière confidentielle.'}
                 </p>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-xs font-semibold text-on-surface transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-none px-5 py-2.5 sm:py-3 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-xs sm:text-sm font-semibold text-on-surface transition-colors cursor-pointer"
                   >
                     {t.inquiryCloseButton}
                   </button>
@@ -324,9 +324,9 @@ export const B2BInquiryModal: React.FC<B2BInquiryModalProps> = ({ isOpen, onClos
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs shadow-xs transition-all cursor-pointer disabled:opacity-50"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 sm:py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm shadow-sm transition-all cursor-pointer disabled:opacity-50"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-4 h-4" />
                     <span>
                       {status === 'submitting'
                         ? t.inquirySubmittingButton

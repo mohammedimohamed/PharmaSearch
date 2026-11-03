@@ -128,4 +128,38 @@ describe('API: /api/send-inquiry serverless handler', () => {
     expect(secondCallBody.to).toContain('karim@labo.dz');
     expect(secondCallBody.subject).toContain('Confirmation de réception de votre demande');
   });
+
+  it('5. Supports multiple comma- or semicolon-separated admin recipients in NOTIFICATION_EMAIL', async () => {
+    process.env.RESEND_API_KEY = 're_test_mock_key_123';
+    process.env.NOTIFICATION_EMAIL = 'admin1@techwise-dz.com, admin2@gmail.com; colleague@domain.dz';
+
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ id: 'email_mock_multi' }),
+    });
+    vi.stubGlobal('fetch', mockFetch);
+
+    const mock = createMockResponse();
+    const req = {
+      method: 'POST',
+      body: {
+        name: 'Sara Medjani',
+        company: 'Pharmalliance',
+        email: 'sara@pharmalliance.dz',
+        phone: '0550998877',
+        interests: ['Scorecards & Benchmarking'],
+      },
+    };
+
+    await handler(req, mock.res);
+    expect(mock.getStatusCode()).toBe(200);
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+
+    const firstCallBody = JSON.parse(mockFetch.mock.calls[0][1].body);
+    expect(firstCallBody.to).toEqual([
+      'admin1@techwise-dz.com',
+      'admin2@gmail.com',
+      'colleague@domain.dz',
+    ]);
+  });
 });

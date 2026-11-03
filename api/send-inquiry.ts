@@ -53,12 +53,16 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     }
 
     const resendApiKey = process.env.RESEND_API_KEY || process.env.RESEND_APT_KEY;
-    const adminEmail = process.env.NOTIFICATION_EMAIL || 'contact@techwise-dz.com';
+    const rawAdminEmails = process.env.NOTIFICATION_EMAIL || 'contact@techwise-dz.com';
+    const adminEmails = rawAdminEmails
+      .split(/[,;]+/)
+      .map((e) => e.trim())
+      .filter(Boolean);
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'PharmaSearch B2B <onboarding@resend.dev>';
 
     // If Resend API Key is configured in environment, dispatch actual emails
     if (resendApiKey) {
-      console.log(`[Resend Dispatching]: from=${fromEmail}, admin=${adminEmail}, visitor=${email}`);
+      console.log(`[Resend Dispatching]: from=${fromEmail}, admins=${adminEmails.join(', ')}, visitor=${email}`);
       const interestsFormatted = interests.length > 0 ? interests.join(', ') : 'Étude générale du marché';
       const isAr = language === 'ar';
 
@@ -123,7 +127,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
           },
           body: JSON.stringify({
             from: fromEmail,
-            to: [adminEmail],
+            to: adminEmails,
             subject: `[Lead B2B PharmaSearch] ${company} - ${name}`,
             html: adminHtml,
           }),
