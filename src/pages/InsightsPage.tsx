@@ -85,7 +85,7 @@ export const InsightsPage: React.FC = () => {
             <span className="text-[11px] font-medium text-on-surface-variant line-clamp-2">
               {t.insightsKpiActiveLabel}
             </span>
-            <div className="mt-3 flex items-baseline gap-1.5">
+            <div className="mt-3 flex items-baseline gap-1.5" dir="ltr">
               <span className="text-2xl sm:text-3xl font-extrabold text-primary">
                 {kpis.activeRecords.toLocaleString()}
               </span>
@@ -173,7 +173,7 @@ export const InsightsPage: React.FC = () => {
               </span>
             </div>
             <span className="text-[10px] text-on-surface-variant/80 mt-1">
-              {isAr ? '1 712 حركة رخص محددة' : '1 712 transferts répertoriés'}
+              {isAr ? '1712 حركة رخص محددة' : '1 712 transferts répertoriés'}
             </span>
           </div>
         </div>
@@ -444,7 +444,7 @@ export const InsightsPage: React.FC = () => {
               </p>
               <p className="text-[11px] text-on-surface-variant">
                 {isAr
-                  ? 'يتضمن التقرير تتبع 1 712 عملية تحويل للمخابر الحائزة وتفاصيل الشراكات الدولية.'
+                  ? 'يتضمن التقرير تتبع 1712 عملية تحويل للمخابر الحائزة وتفاصيل الشراكات الدولية.'
                   : 'Historique des transferts de licence, partenariats internationaux et rotation de portefeuille.'}
               </p>
             </div>
