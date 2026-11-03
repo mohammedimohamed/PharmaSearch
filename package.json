@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "data:process": "tsx scripts/process-nomenclature.ts",
+    "data:report": "tsx scripts/generate-b2b-full-report.ts",
     "data:validate": "vitest run src/tests/DataPipelineAndSearch.test.ts",
     "data:measure-compression": "tsx scripts/measure-compression.ts"
   },

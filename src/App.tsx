@@ -12,6 +12,7 @@ import { HomePage } from '@/pages/HomePage';
 import { SearchPage } from '@/pages/SearchPage';
 import { DetailPage } from '@/pages/DetailPage';
 import { FavouritesPage } from '@/pages/FavouritesPage';
+import { InsightsPage } from '@/pages/InsightsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 const AppContent: React.FC = () => {
@@ -27,6 +28,8 @@ const AppContent: React.FC = () => {
       document.title = 'Recherche | PharmaSearch';
     } else if (path.startsWith('/favoris')) {
       document.title = 'Mes Favoris | PharmaSearch';
+    } else if (path.startsWith('/statistiques') || path.startsWith('/insights')) {
+      document.title = 'Observatoire & Statistiques Marché | PharmaSearch';
     } else if (!path.startsWith('/medicament')) {
       document.title = 'Produit ou page introuvable | PharmaSearch';
     }
@@ -42,6 +45,8 @@ const AppContent: React.FC = () => {
     pageContent = <DetailPage />;
   } else if (path.startsWith('/favoris')) {
     pageContent = <FavouritesPage />;
+  } else if (path.startsWith('/statistiques') || path.startsWith('/insights')) {
+    pageContent = <InsightsPage />;
   } else {
     pageContent = <NotFoundPage />;
   }

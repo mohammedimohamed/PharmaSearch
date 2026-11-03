@@ -1,0 +1,358 @@
+{
+  "generatedAt": "2026-11-03T08:45:51.526Z",
+  "sourceSnapshotDate": "2026-08-31",
+  "headlineKpis": {
+    "totalRecords": 9595,
+    "activeRecords": 5425,
+    "nonRenewedRecords": 1491,
+    "withdrawnRecords": 2679,
+    "localManufacturingPct": 74.2,
+    "importPct": 25.8,
+    "importOnlyDcisCount": 493,
+    "monopolyDcisCount": 649,
+    "orphanedDcisCount": 844,
+    "activeLaboratoriesCount": 538,
+    "participatingCountriesCount": 49,
+    "historicalEditionsCount": 13,
+    "trackedLabTransfersCount": 1712,
+    "crossListDiscrepanciesCount": 41
+  },
+  "therapeuticSovereigntyPreview": {
+    "topLocalClasses": [
+      {
+        "code": "06",
+        "nameFr": "Cardiologie & Angéiologie",
+        "nameAr": "أمراض القلب والشرايين والأوعية",
+        "totalActive": 794,
+        "localCount": 743,
+        "localPct": 93.6,
+        "importCount": 51,
+        "importPct": 6.4
+      },
+      {
+        "code": "16",
+        "nameFr": "Psychiatrie & Psychotropes",
+        "nameAr": "الطب النفسي والمهدئات",
+        "totalActive": 365,
+        "localCount": 309,
+        "localPct": 84.7,
+        "importCount": 56,
+        "importPct": 15.3
+      },
+      {
+        "code": "10",
+        "nameFr": "Gastro-Entéro-Hépatologie",
+        "nameAr": "أمراض الجهاز الهضمي والكبد",
+        "totalActive": 302,
+        "localCount": 264,
+        "localPct": 87.4,
+        "importCount": 38,
+        "importPct": 12.6
+      },
+      {
+        "code": "15",
+        "nameFr": "Neurologie & Antiépileptiques",
+        "nameAr": "أمراض الجهاز العصبي ومضادات الصرع",
+        "totalActive": 287,
+        "localCount": 244,
+        "localPct": 85,
+        "importCount": 43,
+        "importPct": 15
+      },
+      {
+        "code": "04",
+        "nameFr": "Anti-inflammatoires & Rhumatologie",
+        "nameAr": "مضادات الالتهاب وأمراض المفاصل",
+        "totalActive": 213,
+        "localCount": 200,
+        "localPct": 93.9,
+        "importCount": 13,
+        "importPct": 6.1
+      }
+    ],
+    "topImportDependentClasses": [
+      {
+        "code": "28",
+        "nameFr": "Maladies Rares & Enzymothérapie",
+        "nameAr": "الأمراض النادرة والإنزيمات البديلة",
+        "totalActive": 5,
+        "localCount": 0,
+        "localPct": 0,
+        "importCount": 5,
+        "importPct": 100,
+        "hopOnlyPct": 100
+      },
+      {
+        "code": "08",
+        "nameFr": "Produits de Diagnostic & Radiologie",
+        "nameAr": "مواد التشخيص والتصوير الطبي",
+        "totalActive": 24,
+        "localCount": 1,
+        "localPct": 4.2,
+        "importCount": 23,
+        "importPct": 95.8,
+        "hopOnlyPct": 12.5
+      },
+      {
+        "code": "27",
+        "nameFr": "Immunosuppresseurs & Greffes",
+        "nameAr": "مثبطات المناعة وزراعة الأعضاء",
+        "totalActive": 36,
+        "localCount": 12,
+        "localPct": 33.3,
+        "importCount": 24,
+        "importPct": 66.7,
+        "hopOnlyPct": 75
+      },
+      {
+        "code": "05",
+        "nameFr": "Cancérologie & Antinéoplasiques",
+        "nameAr": "علاج الأورام ومضادات السرطان",
+        "totalActive": 426,
+        "localCount": 176,
+        "localPct": 41.3,
+        "importCount": 250,
+        "importPct": 58.7,
+        "hopOnlyPct": 87.8
+      },
+      {
+        "code": "17",
+        "nameFr": "Ophtalmologie",
+        "nameAr": "طب العيون",
+        "totalActive": 206,
+        "localCount": 87,
+        "localPct": 42.2,
+        "importCount": 119,
+        "importPct": 57.8,
+        "hopOnlyPct": 3.9
+      }
+    ],
+    "lockedRemainingClassesCount": 18
+  },
+  "laboratoriesBenchmarkingPreview": {
+    "topPlayers": [
+      {
+        "rank": 1,
+        "name": "EL KENDI INDUSTRIE DU MEDICAMENT",
+        "activeAmms": 284,
+        "uniqueDcis": 164,
+        "localAmms": 276,
+        "importedAmms": 8,
+        "localPct": 97.2,
+        "biologicsCount": 1,
+        "nonRenewedCount": 29,
+        "withdrawnCount": 7
+      },
+      {
+        "rank": 2,
+        "name": "HIKMA PHARMA ALGERIA",
+        "activeAmms": 237,
+        "uniqueDcis": 128,
+        "localAmms": 216,
+        "importedAmms": 21,
+        "localPct": 91.1,
+        "biologicsCount": 0,
+        "nonRenewedCount": 0,
+        "withdrawnCount": 0
+      },
+      {
+        "rank": 3,
+        "name": "BIOPHARM",
+        "activeAmms": 200,
+        "uniqueDcis": 127,
+        "localAmms": 185,
+        "importedAmms": 15,
+        "localPct": 92.5,
+        "biologicsCount": 1,
+        "nonRenewedCount": 3,
+        "withdrawnCount": 4
+      },
+      {
+        "rank": 4,
+        "name": "GROUPE SAIDAL",
+        "activeAmms": 181,
+        "uniqueDcis": 129,
+        "localAmms": 181,
+        "importedAmms": 0,
+        "localPct": 100,
+        "biologicsCount": 17,
+        "nonRenewedCount": 205,
+        "withdrawnCount": 1
+      },
+      {
+        "rank": 5,
+        "name": "LABORATOIRES BEKER",
+        "activeAmms": 180,
+        "uniqueDcis": 102,
+        "localAmms": 180,
+        "importedAmms": 0,
+        "localPct": 100,
+        "biologicsCount": 2,
+        "nonRenewedCount": 0,
+        "withdrawnCount": 0
+      }
+    ],
+    "lockedRemainingLabsCount": 533
+  },
+  "galenicFormsImportDependencyPreview": {
+    "highImportForms": [
+      {
+        "form": "POUDRE POUR SOLUTION INJECTABLE IV",
+        "totalActive": 11,
+        "localCount": 1,
+        "importCount": 10,
+        "importPct": 90.9
+      },
+      {
+        "form": "POUDRE LYOPHILISEE POUR SOLUTION A DILUER POUR PERFUSION IV",
+        "totalActive": 17,
+        "localCount": 3,
+        "importCount": 14,
+        "importPct": 82.4
+      },
+      {
+        "form": "POMMADE OPHTALMIQUE",
+        "totalActive": 11,
+        "localCount": 2,
+        "importCount": 9,
+        "importPct": 81.8
+      },
+      {
+        "form": "POUDRE POUR SOLUTION A DILUER POUR PERFUSION",
+        "totalActive": 15,
+        "localCount": 3,
+        "importCount": 12,
+        "importPct": 80
+      },
+      {
+        "form": "POUDRE POUR SOLUTION INJECTABLE",
+        "totalActive": 18,
+        "localCount": 4,
+        "importCount": 14,
+        "importPct": 77.8
+      }
+    ],
+    "lockedRemainingFormsCount": 58
+  },
+  "importOnlyTargetsPreview": {
+    "sampleMolecules": [
+      {
+        "dci": "EXTRAITS ALLERGENIQUES MELANGE DE 5 GRAMINES",
+        "activeCount": 2,
+        "classCode": "01",
+        "classNameFr": "Allergologie & Antihistaminiques",
+        "forms": [
+          "SUSPENSION INJECTABLE"
+        ],
+        "sampleLabs": [
+          "STALLERGENES S.A."
+        ]
+      },
+      {
+        "dci": "ALFENTANYL CHLORHYDRATE",
+        "activeCount": 2,
+        "classCode": "02",
+        "classNameFr": "Anesthésie & Réanimation",
+        "forms": [
+          "SOLUTION INJECTABLE"
+        ],
+        "sampleLabs": [
+          "PIRMAL CRITICAL CARE B.V"
+        ]
+      },
+      {
+        "dci": "CHLORHYDRATE DE REMIFENTANIL",
+        "activeCount": 2,
+        "classCode": "02",
+        "classNameFr": "Anesthésie & Réanimation",
+        "forms": [
+          "POUDRE POUR SOL INJ OU POUR PERF IV"
+        ],
+        "sampleLabs": [
+          "MYLAN SAS"
+        ]
+      },
+      {
+        "dci": "ISOFLURANE",
+        "activeCount": 2,
+        "classCode": "02",
+        "classNameFr": "Anesthésie & Réanimation",
+        "forms": [
+          "LIQUIDE. P. INHAL. PAR VAPEUR"
+        ],
+        "sampleLabs": [
+          "BAXTER HEALTHCARE COPORATION",
+          "ABBVIE"
+        ]
+      },
+      {
+        "dci": "PROPOFOL",
+        "activeCount": 3,
+        "classCode": "02",
+        "classNameFr": "Anesthésie & Réanimation",
+        "forms": [
+          "EMULSION INJ. IV ET POUR PERF.IV",
+          "EMULSION IV PERF."
+        ],
+        "sampleLabs": [
+          "FRESENIUS KABI",
+          "EL KENDI INDUSTRIE DU MEDICAMENT"
+        ]
+      }
+    ],
+    "lockedRemainingDcisCount": 488
+  },
+  "monopolyTargetsPreview": {
+    "sampleMolecules": [
+      {
+        "dci": "PROMETHAZINE CHLORHYDRATE EXPRIME EN PROMETHAZINE",
+        "brandName": "PRANOK",
+        "laboratory": "GLOBAL PHARMATECH PRIVATE LIMITED",
+        "country": "INDE",
+        "classification": "GE",
+        "channel": "Hôpital (HOP)"
+      },
+      {
+        "dci": "RUPATADINE S/F FUMARATE",
+        "brandName": "ROPAP",
+        "laboratory": "EL KENDI INDUSTRIE DU MEDICAMENT",
+        "country": "ALGERIE",
+        "classification": "GE",
+        "channel": "Officine & Hôpital"
+      },
+      {
+        "dci": "EBASTINE",
+        "brandName": "EBASTA",
+        "laboratory": "LABORATOIRES MERINAL",
+        "country": "ALGERIE",
+        "classification": "GE",
+        "channel": "Officine & Hôpital"
+      },
+      {
+        "dci": "DICHLORBYDRATE DE LEVOCETIRIZINE",
+        "brandName": "TYRIZAL",
+        "laboratory": "BIOPHARM",
+        "country": "ALGERIE",
+        "classification": "GE",
+        "channel": "Officine & Hôpital"
+      },
+      {
+        "dci": "SUCCINATE DE DOXYLAMINE/CHLORHYDRATE DE PYRIDOXINE",
+        "brandName": "CARIBAN",
+        "laboratory": "ITALFARMACO S.A",
+        "country": "ESPAGNE",
+        "classification": "RE",
+        "channel": "Officine & Hôpital"
+      }
+    ],
+    "lockedRemainingMonopoliesCount": 644
+  },
+  "partnerInfo": {
+    "advisorName": "TechWise Advisors",
+    "advisorRoleFr": "Cabinet de Conseil en Stratégie & Systèmes d’Information d’Entreprise",
+    "advisorRoleAr": "مكتب استشارات في الإستراتيجية ونظم المعلومات المؤسساتية",
+    "advisorWebsite": "https://techwise-dz.com/",
+    "advisorLinkedIn": "https://www.linkedin.com/company/techwiseadvisors",
+    "advisorEmail": "contact@techwise-dz.com"
+  }
+}

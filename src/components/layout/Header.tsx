@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Pill, Globe, Menu, X, Star } from 'lucide-react';
+import { Pill, Globe, Menu, X, Star, BarChart3 } from 'lucide-react';
 import { useI18n } from '@/context/I18nContext';
 import { useRouter } from '@/router/RouterContext';
 import { useFavourites } from '@/context/FavouritesContext';
+import { translations } from '@/locales/dictionary';
 import { cn } from '@/utils/cn';
 
 interface HeaderProps {
@@ -19,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
   const lang = currentLang ?? i18n.language;
   const isAr = lang === 'ar';
   const handleToggleLang = onToggleLang ?? i18n.toggleLanguage;
+  const t = translations[lang];
 
   const handleNav = (targetPath: string) => {
     navigate(targetPath);
@@ -28,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
   const isHome = path === '/';
   const isSearch = path.startsWith('/recherche') || path.startsWith('/medicament');
   const isFavs = path === '/favoris';
+  const isStats = path.startsWith('/statistiques') || path.startsWith('/insights');
 
   return (
     <header className="w-full bg-surface-container-lowest border-b border-outline-variant/40 sticky top-0 z-40 shadow-xs">
@@ -85,6 +88,20 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
               )}
             >
               {isAr ? 'السجل والبحث' : 'Registre & Recherche'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleNav('/statistiques')}
+              className={cn(
+                'inline-flex items-center gap-1.5 py-1.5 px-2 rounded-md transition-colors',
+                isStats
+                  ? 'text-primary font-bold bg-surface-container'
+                  : 'hover:text-primary hover:bg-surface-container-low'
+              )}
+            >
+              <BarChart3 className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>{t.navInsights}</span>
             </button>
 
             <button
@@ -156,6 +173,18 @@ export const Header: React.FC<HeaderProps> = ({ currentLang, onToggleLang }) => 
             )}
           >
             {isAr ? 'السجل والبحث' : 'Registre & Recherche'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleNav('/statistiques')}
+            className={cn(
+              'w-full flex items-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-colors',
+              isStats ? 'bg-surface-container text-primary font-bold' : 'text-on-surface hover:bg-surface-container-low'
+            )}
+          >
+            <BarChart3 className="w-4 h-4 text-primary" aria-hidden="true" />
+            <span>{t.navInsights}</span>
           </button>
 
           <button

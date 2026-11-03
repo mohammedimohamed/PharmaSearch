@@ -8,6 +8,7 @@ export interface TranslationDictionary {
   navHome: string;
   navRegistry: string;
   navFavourites: string;
+  navInsights: string;
   navProvenance: string;
 
   // Banner & Provenance
@@ -254,6 +255,48 @@ export interface TranslationDictionary {
   typeBioDesc: string;
   typeUnspecified: string;
   scheduleUnspecified: string;
+
+  // B2B Market Insights & Observatoire
+  insightsTitle: string;
+  insightsSubtitle: string;
+  insightsTeaserBadge: string;
+  insightsSnapshotNote: string;
+  insightsKpiActiveLabel: string;
+  insightsKpiLocalPct: string;
+  insightsKpiImportOnly: string;
+  insightsKpiMonopolies: string;
+  insightsKpiOrphaned: string;
+  insightsKpiLabs: string;
+  insightsPillar1Title: string;
+  insightsPillar1Subtitle: string;
+  insightsPillar1TopLocal: string;
+  insightsPillar1TopImport: string;
+  insightsPillar2Title: string;
+  insightsPillar2Subtitle: string;
+  insightsPillar3Title: string;
+  insightsPillar3Subtitle: string;
+  insightsPillar4Title: string;
+  insightsPillar4Subtitle: string;
+  insightsLockedNotice: string;
+  insightsLockedSub: string;
+  insightsLockedBadge: string;
+  insightsCtaTitle: string;
+  insightsCtaDesc: string;
+  insightsCtaButtonPrimary: string;
+  insightsCtaButtonLinkedIn: string;
+  insightsCtaFeature1: string;
+  insightsCtaFeature2: string;
+  insightsCtaFeature3: string;
+  insightsCtaFeature4: string;
+  insightsTableDci: string;
+  insightsTableClass: string;
+  insightsTableForms: string;
+  insightsTableLabs: string;
+  insightsTableActiveAmms: string;
+  insightsTableLocalPct: string;
+  insightsTableBiologics: string;
+  insightsTableAttrition: string;
+  insightsTableChannel: string;
 }
 
 export const translations: Record<Language, TranslationDictionary> = {
@@ -264,6 +307,7 @@ export const translations: Record<Language, TranslationDictionary> = {
     navHome: 'Accueil',
     navRegistry: 'Registre',
     navFavourites: 'Favoris',
+    navInsights: 'Observatoire & Marché',
     navProvenance: 'Source & Traçabilité',
 
     officialRepublic: 'République Algérienne Démocratique et Populaire',
@@ -500,6 +544,47 @@ export const translations: Record<Language, TranslationDictionary> = {
     typeBioDesc: 'Produit biologique (BIO)',
     typeUnspecified: 'Non spécifié dans le document source',
     scheduleUnspecified: 'Non listé (non spécifié dans le registre officiel — ne préjuge pas du statut de vente libre)',
+
+    insightsTitle: 'Observatoire & Statistiques du Marché Pharmaceutique',
+    insightsSubtitle: "Aperçu analytique macroéconomique et réglementaire pour les décideurs de la santé et les entreprises du secteur.",
+    insightsTeaserBadge: 'Aperçu Exclusif B2B',
+    insightsSnapshotNote: 'Extrait certifié du référentiel national au 31 Août 2026 et de 13 éditions séquentielles (2024–2026)',
+    insightsKpiActiveLabel: 'Spécialités enregistrées actives',
+    insightsKpiLocalPct: 'Taux de fabrication locale',
+    insightsKpiImportOnly: 'DCI actives 100% importées',
+    insightsKpiMonopolies: 'DCI en situation de monopole',
+    insightsKpiOrphaned: 'DCI orphelines sans alternative',
+    insightsKpiLabs: 'Laboratoires détenteurs suivis',
+    insightsPillar1Title: '1. Souveraineté Industrielle & Substitution à l’Importation',
+    insightsPillar1Subtitle: 'Cartographie de l’autonomie nationale par classe thérapeutique et formes pharmaceutiques.',
+    insightsPillar1TopLocal: 'Classes à Forte Autonomie Locale (>85%)',
+    insightsPillar1TopImport: 'Classes Fortement Dépendantes de l’Importation (<55% local)',
+    insightsPillar2Title: '2. Matrice R&D & Opportunités de Licensing (BD&L)',
+    insightsPillar2Subtitle: 'Molécules sous monopole ou sans production locale — opportunités d’enregistrement et de substitution.',
+    insightsPillar3Title: '3. Benchmarking Concurrentiel des Laboratoires',
+    insightsPillar3Subtitle: 'Analyse comparative des portefeuilles, de la part de marché réglementaire et du taux d’attrition.',
+    insightsPillar4Title: '4. Formes Galéniques & Dépendance Technologique',
+    insightsPillar4Subtitle: 'Niveaux de dépendance à l’importation selon la technologie de formulation et de conditionnement.',
+    insightsLockedNotice: 'Données intégrales réservées à l’étude B2B complète',
+    insightsLockedSub: 'Accédez à l’exhaustivité des données, aux fichiers exploitables (Excel/CSV) et aux analyses détaillées en contactant TechWise Advisors.',
+    insightsLockedBadge: 'Accès Réservé Entreprises',
+    insightsCtaTitle: 'Besoin de l’étude intégrale ou d’un accompagnement stratégique ?',
+    insightsCtaDesc: 'Laboratoires pharmaceutiques, importateurs, investisseurs ou distributeurs : TechWise Advisors valorise les données réglementaires pour éclairer vos décisions d’investissement, de développement et d’accès au marché.',
+    insightsCtaButtonPrimary: 'Commander l’étude complète (TechWise Advisors)',
+    insightsCtaButtonLinkedIn: 'Contacter TechWise Advisors sur LinkedIn',
+    insightsCtaFeature1: 'Fichier Excel normalisé et audité des 9 595 enregistrements',
+    insightsCtaFeature2: 'Liste nominative des 493 DCI importées sans fabricant local',
+    insightsCtaFeature3: 'Historique des 1 712 transferts de licences et retraits d’AMM',
+    insightsCtaFeature4: 'Conseil en conformité et validation d’éligibilité aux appels d’offres (PCH)',
+    insightsTableDci: 'DCI (Substance active)',
+    insightsTableClass: 'Classe thérapeutique',
+    insightsTableForms: 'Formes observées',
+    insightsTableLabs: 'Laboratoires détenteurs',
+    insightsTableActiveAmms: 'Spécialités actives',
+    insightsTableLocalPct: '% Local',
+    insightsTableBiologics: 'Biologiques (BIO)',
+    insightsTableAttrition: 'Attrition historique',
+    insightsTableChannel: 'Canal de dispensation',
   },
   ar: {
     appName: 'فارماسيرش',
@@ -508,6 +593,7 @@ export const translations: Record<Language, TranslationDictionary> = {
     navHome: 'الرئيسية',
     navRegistry: 'السجل',
     navFavourites: 'المفضلة',
+    navInsights: 'المرصد والسوق',
     navProvenance: 'المصدر والتنظيم',
 
     officialRepublic: 'الجمهورية الجزائرية الديمقراطية الشعبية',
@@ -744,5 +830,46 @@ export const translations: Record<Language, TranslationDictionary> = {
     typeBioDesc: 'منتج بيولوجي (BIO)',
     typeUnspecified: 'غير محدد في الوثيقة المصدرية',
     scheduleUnspecified: 'غير مدرج في قائمة (غير محدد في السجل الرسمي — لا يعني تلقائياً أنه يباع بدون وصفة / OTC)',
+
+    insightsTitle: 'المرصد التنظيمي وإحصائيات السوق الصيدلانية',
+    insightsSubtitle: 'نظرة تحليلية ماكرو-اقتصادية وتنظيمية موجهة لمدراء الصحة والمؤسسات الصيدلانية والمهنيين.',
+    insightsTeaserBadge: 'معاينة حصرية B2B',
+    insightsSnapshotNote: 'مستخرج رسمي معتمد من المدونة الوطنية الصيدلانية (31 أوت 2026) و13 طبعة أرشيفية (2024–2026)',
+    insightsKpiActiveLabel: 'أدوية نشطة مسجلة',
+    insightsKpiLocalPct: 'نسبة الإنتاج المحلي',
+    insightsKpiImportOnly: 'مواد فعالة مستوردة كلياً 100%',
+    insightsKpiMonopolies: 'مواد فعالة باحتكار مسجل',
+    insightsKpiOrphaned: 'مواد مسحوبة دون بديل تجاري',
+    insightsKpiLabs: 'مخابر صيدلانية معتمدة',
+    insightsPillar1Title: '1. السيادة الصناعية وإحلال الواردات',
+    insightsPillar1Subtitle: 'مخطط الاستقلالية الوطنية حسب الفئات العلاجية والأشكال الصيدلانية.',
+    insightsPillar1TopLocal: 'الفئات العلاجية ذات السيادة العالية (>85% محلي)',
+    insightsPillar1TopImport: 'الفئات العلاجية التابعة للاستيراد (<55% محلي)',
+    insightsPillar2Title: '2. مصفوفة التطوير والبحث والرخص الدوائية (BD&L)',
+    insightsPillar2Subtitle: 'أدوية في وضعية احتكار أو بدون إنتاج محلي — فرص استثمارية لحيازة حصص سوقية محمية.',
+    insightsPillar3Title: '3. المقارنة التنافسية لمحفظة المخابر',
+    insightsPillar3Subtitle: 'تحليل مقارن للمحافظ المسجلة، الحصص التنظيمية ومعدل الاستقرار.',
+    insightsPillar4Title: '4. الأشكال الصيدلانية والتبعية التكنولوجية',
+    insightsPillar4Subtitle: 'مستويات التبعية للاستيراد بحسب تقنيات التصنيع والتعليب.',
+    insightsLockedNotice: 'البيانات الكاملة والتفصيلية مخصصة للتقرير المؤسساتي B2B',
+    insightsLockedSub: 'للحصول على الدراسة الكاملة وملفات البيانات القابلة للاستغلال (Excel/CSV)، يرجى التواصل مع TechWise Advisors.',
+    insightsLockedBadge: 'محتوى مخصص للشركات',
+    insightsCtaTitle: 'هل تحتاج إلى التقرير الكامل أو استشارة استراتيجية مخصصة؟',
+    insightsCtaDesc: 'المخابر الصيدلانية، المستوردون، المستثمرون والموزعون: يقدم TechWise Advisors تحليلات عميقة للبيانات التنظيمية لتوجيه قراراتكم الاستثمارية والتطويرية في السوق الجزائري.',
+    insightsCtaButtonPrimary: 'طلب الدراسة الكاملة (TechWise Advisors)',
+    insightsCtaButtonLinkedIn: 'التواصل مع TechWise Advisors على LinkedIn',
+    insightsCtaFeature1: 'ملف Excel شامل ومطابق لـ 9 595 تسجيلاً صيدلانياً مع التدقيق',
+    insightsCtaFeature2: 'القائمة الاسمية الكاملة لـ 493 مادة فعالة مستوردة دون منافس محلي',
+    insightsCtaFeature3: 'سجل تفصيلي لـ 1 712 عملية نقل رخص وسحب قرارات التسجيل',
+    insightsCtaFeature4: 'استشارات المطابقة التنظيمية والتأهيل لمناقصات الصيدلية المركزية (PCH)',
+    insightsTableDci: 'المادة الفعالة (DCI)',
+    insightsTableClass: 'الفئة العلاجية',
+    insightsTableForms: 'الأشكال المرصودة',
+    insightsTableLabs: 'المخابر الحائزة',
+    insightsTableActiveAmms: 'الأدوية النشطة',
+    insightsTableLocalPct: 'النسبة المحلية',
+    insightsTableBiologics: 'الأدوية البيولوجية',
+    insightsTableAttrition: 'معدل الانسحاب التاريخي',
+    insightsTableChannel: 'قناة الصرف',
   },
 };
