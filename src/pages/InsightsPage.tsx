@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Factory,
   TrendingUp,
@@ -10,13 +10,14 @@ import {
   Database,
   Pill,
   Linkedin,
-  Globe,
   Mail,
   ShieldCheck,
   CheckCircle2,
+  Send,
 } from 'lucide-react';
 import { useI18n } from '@/context/I18nContext';
 import { translations } from '@/locales/dictionary';
+import { B2BInquiryModal } from '@/components/insights/B2BInquiryModal';
 import previewDataRaw from '@/data/b2b-insights-preview.json';
 import type { B2BInsightsPreviewData } from '../../scripts/generate-b2b-full-report';
 
@@ -26,6 +27,8 @@ export const InsightsPage: React.FC = () => {
   const { language } = useI18n();
   const isAr = language === 'ar';
   const t = translations[language];
+
+  const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
 
   const kpis = previewData.headlineKpis;
   const p1 = previewData.therapeuticSovereigntyPreview;
@@ -62,15 +65,27 @@ export const InsightsPage: React.FC = () => {
             </p>
           </div>
 
-          <a
-            href={partner.advisorWebsite}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs sm:text-sm shadow-sm transition-all shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span>{t.insightsCtaButtonPrimary}</span>
-            <ExternalLink className="w-4 h-4 opacity-80" aria-hidden="true" />
-          </a>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => setInquiryModalOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-semibold text-xs sm:text-sm shadow-sm transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Send className="w-4 h-4" />
+              <span>{isAr ? 'طلب التقرير الكامل واستشارة' : 'Demander l’étude complète'}</span>
+            </button>
+
+            <a
+              href={partner.advisorLinkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-on-surface font-semibold text-xs sm:text-sm transition-colors"
+            >
+              <Linkedin className="w-4 h-4 text-[#0A66C2]" />
+              <span>LinkedIn</span>
+              <ExternalLink className="w-3.5 h-3.5 text-outline" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -286,7 +301,7 @@ export const InsightsPage: React.FC = () => {
             </div>
           </div>
           <a
-            href={partner.advisorWebsite}
+            href={partner.advisorLinkedIn}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-xs font-semibold text-primary transition-colors shrink-0"
@@ -362,7 +377,7 @@ export const InsightsPage: React.FC = () => {
             </div>
           </div>
           <a
-            href={partner.advisorWebsite}
+            href={partner.advisorLinkedIn}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-2xs transition-colors shrink-0"
@@ -450,7 +465,7 @@ export const InsightsPage: React.FC = () => {
             </div>
           </div>
           <a
-            href={partner.advisorWebsite}
+            href={partner.advisorLinkedIn}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-xs font-semibold text-primary transition-colors shrink-0"
@@ -546,26 +561,24 @@ export const InsightsPage: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto shrink-0">
-            <a
-              href={partner.advisorWebsite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-sm shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            <button
+              type="button"
+              onClick={() => setInquiryModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-sm shadow-sm transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <Globe className="w-4 h-4" />
-              <span>{t.insightsCtaButtonPrimary}</span>
-              <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-            </a>
+              <Send className="w-4 h-4" />
+              <span>{t.inquiryModalTitle}</span>
+            </button>
 
             <a
               href={partner.advisorLinkedIn}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-on-surface font-semibold text-xs sm:text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <Linkedin className="w-4 h-4 text-[#0A66C2]" />
+              <Linkedin className="w-4 h-4" />
               <span>{t.insightsCtaButtonLinkedIn}</span>
-              <ExternalLink className="w-3.5 h-3.5 text-outline" />
+              <ExternalLink className="w-3.5 h-3.5 opacity-80" />
             </a>
 
             <div className="flex items-center justify-center gap-2 text-[11px] text-on-surface-variant pt-1">
@@ -580,6 +593,12 @@ export const InsightsPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* B2B Lead Inquiry Modal */}
+      <B2BInquiryModal
+        isOpen={inquiryModalOpen}
+        onClose={() => setInquiryModalOpen(false)}
+      />
     </main>
   );
 };

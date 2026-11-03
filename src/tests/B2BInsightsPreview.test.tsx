@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import fs from 'fs';
 import path from 'path';
 
@@ -75,11 +75,13 @@ describe('B2B Market Insights & Aperçu (Statistical Value Proposition)', () => 
     expect(screen.getByText('493')).toBeInTheDocument();
     expect(screen.getByText('649')).toBeInTheDocument();
 
-    // TechWise Advisors CTAs
-    const partnerLinks = screen.getAllByRole('link', { name: /TechWise Advisors/i });
+    // TechWise Advisors CTAs point to LinkedIn
+    const partnerLinks = screen.getAllByRole('link', { name: /TechWise Advisors|LinkedIn/i });
     expect(partnerLinks.length).toBeGreaterThan(0);
-    const mainWebsiteLink = partnerLinks.find((l) => l.getAttribute('href') === 'https://techwise-dz.com/');
-    expect(mainWebsiteLink).toBeDefined();
+    const linkedInLink = partnerLinks.find((l) =>
+      l.getAttribute('href')?.includes('linkedin.com/company/techwiseadvisors')
+    );
+    expect(linkedInLink).toBeDefined();
   });
 
   it('4. UI Component: InsightsPage renders RTL and Arabic translations', () => {
@@ -108,5 +110,26 @@ describe('B2B Market Insights & Aperçu (Statistical Value Proposition)', () => 
 
     expect(screen.getByText('Aperçu Exclusif B2B')).toBeInTheDocument();
     expect(document.title).toBe('Observatoire & Statistiques Marché | PharmaSearch');
+  });
+
+  it('6. B2B Inquiry Form: clicking modal CTA opens lead capture form with fields & LinkedIn link', async () => {
+    render(
+      <RouterProvider>
+        <I18nProvider>
+          <InsightsPage />
+        </I18nProvider>
+      </RouterProvider>
+    );
+
+    // Click hero button
+    const openBtn = screen.getByRole('button', { name: /Demander l’étude complète/i });
+    fireEvent.click(openBtn);
+
+    // Modal is opened
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Ex: Dr. Karim Benali/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/k.benali@entreprise.dz/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/0550 12 34 56/i)).toBeInTheDocument();
+    expect(screen.getByText(/Données et modules qui vous intéressent/i)).toBeInTheDocument();
   });
 });

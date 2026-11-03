@@ -297,6 +297,30 @@ export interface TranslationDictionary {
   insightsTableBiologics: string;
   insightsTableAttrition: string;
   insightsTableChannel: string;
+
+  // B2B Inquiry Form
+  inquiryModalTitle: string;
+  inquiryModalSubtitle: string;
+  inquiryNameLabel: string;
+  inquiryNamePlaceholder: string;
+  inquiryCompanyLabel: string;
+  inquiryCompanyPlaceholder: string;
+  inquiryEmailLabel: string;
+  inquiryEmailPlaceholder: string;
+  inquiryPhoneLabel: string;
+  inquiryPhonePlaceholder: string;
+  inquiryInterestsTitle: string;
+  inquiryInterestExcel: string;
+  inquiryInterestImportOnly: string;
+  inquiryInterestLabs: string;
+  inquiryInterestAdvisory: string;
+  inquiryQuestionsLabel: string;
+  inquiryQuestionsPlaceholder: string;
+  inquirySubmitButton: string;
+  inquirySubmittingButton: string;
+  inquirySuccessTitle: string;
+  inquirySuccessMessage: string;
+  inquiryCloseButton: string;
 }
 
 export const translations: Record<Language, TranslationDictionary> = {
@@ -585,6 +609,29 @@ export const translations: Record<Language, TranslationDictionary> = {
     insightsTableBiologics: 'Biologiques (BIO)',
     insightsTableAttrition: 'Attrition historique',
     insightsTableChannel: 'Canal de dispensation',
+
+    inquiryModalTitle: 'Demande d’Accès aux Données & Étude B2B',
+    inquiryModalSubtitle: 'Remplissez ce formulaire pour recevoir les modalités d’accès au rapport complet ou être recontacté par un conseiller TechWise Advisors.',
+    inquiryNameLabel: 'Nom & Prénom',
+    inquiryNamePlaceholder: 'Ex: Dr. Karim Benali',
+    inquiryCompanyLabel: 'Entreprise / Laboratoire / Établissement',
+    inquiryCompanyPlaceholder: 'Ex: Laboratoires Algériens, Distributeur...',
+    inquiryEmailLabel: 'Email Professionnel',
+    inquiryEmailPlaceholder: 'k.benali@entreprise.dz',
+    inquiryPhoneLabel: 'Numéro de Téléphone',
+    inquiryPhonePlaceholder: '0550 12 34 56',
+    inquiryInterestsTitle: 'Données et modules qui vous intéressent :',
+    inquiryInterestExcel: 'Fichier Excel normalisé et audité des 9 595 enregistrements',
+    inquiryInterestImportOnly: 'Liste exhaustive des 493 DCI à 100% d’importation (Cibles R&D)',
+    inquiryInterestLabs: 'Scorecards & Benchmarking des 538 laboratoires et transferts',
+    inquiryInterestAdvisory: 'Conseil stratégique & validation réglementaire pour appels d’offres (PCH)',
+    inquiryQuestionsLabel: 'Besoins spécifiques ou questions complémentaires (Optionnel)',
+    inquiryQuestionsPlaceholder: 'Précisez votre demande, classe thérapeutique ciblée, délais...',
+    inquirySubmitButton: 'Transmettre ma demande',
+    inquirySubmittingButton: 'Transmission en cours...',
+    inquirySuccessTitle: 'Demande reçue avec succès !',
+    inquirySuccessMessage: 'Un email de confirmation vous a été adressé. Un conseiller TechWise Advisors prendra contact avec vous sous 24h pour vous transmettre les éléments demandés.',
+    inquiryCloseButton: 'Fermer',
   },
   ar: {
     appName: 'فارماسيرش',
@@ -871,5 +918,28 @@ export const translations: Record<Language, TranslationDictionary> = {
     insightsTableBiologics: 'الأدوية البيولوجية',
     insightsTableAttrition: 'معدل الانسحاب التاريخي',
     insightsTableChannel: 'قناة الصرف',
+
+    inquiryModalTitle: 'طلب الاطلاع على البيانات والدراسة المؤسساتية B2B',
+    inquiryModalSubtitle: 'يرجى ملء هذه الاستمارة لتلقي شروط وإجراءات الحصول على التقرير الكامل أو التواصل مع مستشار من TechWise Advisors.',
+    inquiryNameLabel: 'الاسم واللقب',
+    inquiryNamePlaceholder: 'مثال: د. كريم بن علي',
+    inquiryCompanyLabel: 'المؤسسة / المخبر / الهيئة',
+    inquiryCompanyPlaceholder: 'مثال: مخابر صيدلانية، موزع معتمد...',
+    inquiryEmailLabel: 'البريد الإلكتروني المهني',
+    inquiryEmailPlaceholder: 'k.benali@company.dz',
+    inquiryPhoneLabel: 'رقم الهاتف',
+    inquiryPhonePlaceholder: '0550 12 34 56',
+    inquiryInterestsTitle: 'البيانات والخدمات التي تهمكم :',
+    inquiryInterestExcel: 'ملف Excel شامل ومطابق لـ 9595 تسجيلاً صيدلانياً مع التدقيق',
+    inquiryInterestImportOnly: 'القائمة الاسمية لـ 493 مادة فعالة مستوردة كلياً (فرص استثمار R&D)',
+    inquiryInterestLabs: 'بطاقات الأداء والمقارنة لـ 538 مخبراً وسجل تحويل الرخص',
+    inquiryInterestAdvisory: 'استشارات المطابقة التنظيمية والتأهيل لمناقصات الصيدلية المركزية (PCH)',
+    inquiryQuestionsLabel: 'استفسارات محددة أو احتياجات خاصة (اختياري)',
+    inquiryQuestionsPlaceholder: 'حدد الفئة العلاجية المستهدفة، استفسارات عن التراخيص...',
+    inquirySubmitButton: 'إرسال الطلب',
+    inquirySubmittingButton: 'جاري الإرسال...',
+    inquirySuccessTitle: 'تم استلام طلبكم بنجاح !',
+    inquirySuccessMessage: 'تم إرسال بريد إلكتروني تأكيدي إليكم. سيتواصل معكم مستشار من TechWise Advisors هاتفياً أو عبر البريد في غضون 24 ساعة.',
+    inquiryCloseButton: 'إغلاق',
   },
 };
