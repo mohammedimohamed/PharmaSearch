@@ -200,3 +200,47 @@ export interface NomenclatureDataset {
   metadata: DatasetMetadata;
   records: PharmaceuticalRecord[];
 }
+
+/**
+ * Historical version comparison and timeline evolution types.
+ */
+export interface VersionChangeItem {
+  field: string;
+  oldValue: string;
+  newValue: string;
+  labelFr: string;
+  labelAr: string;
+}
+
+export type TimelineEventType =
+  | 'INITIAL_REGISTRATION'
+  | 'APPEARED'
+  | 'STATUS_CHANGE'
+  | 'FIELD_MODIFICATION'
+  | 'WITHDRAWAL'
+  | 'RENEWAL'
+  | 'CONFIRMED';
+
+export interface TimelineEvent {
+  editionId: string;
+  editionLabel: string;
+  editionDate: string;
+  type: TimelineEventType;
+  sourceList: SourceListType;
+  badgeLabelFr: string;
+  badgeLabelAr: string;
+  titleFr: string;
+  titleAr: string;
+  changes?: VersionChangeItem[];
+  details?: Record<string, string>;
+}
+
+export interface MedicineHistoryItem {
+  recordId: string;
+  registrationNumber: string;
+  firstSeenEdition: string;
+  lastSeenEdition: string;
+  annualNewGrantYear?: number;
+  events: TimelineEvent[];
+}
+

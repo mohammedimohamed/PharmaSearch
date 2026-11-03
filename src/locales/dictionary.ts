@@ -223,6 +223,23 @@ export interface TranslationDictionary {
   relatedPresentationsDesc: string;
   viewDetails: string;
 
+  // Medicine Evolution Timeline (Nomenclature History)
+  sectionTimeline: string;
+  timelineIntro: string;
+  timelineLoading: string;
+  timelineNoData: string;
+  timelineError: string;
+  timelineFieldOld: string;
+  timelineFieldNew: string;
+  timelineEventInitial: string;
+  timelineEventAppeared: string;
+  timelineEventStatusChange: string;
+  timelineEventModification: string;
+  timelineEventWithdrawal: string;
+  timelineEventConfirmed: string;
+  timelineFilterAll: string;
+  timelineFilterChangesOnly: string;
+
   // Code Explanations
   codeStatutLabel: string;
   codeTypeLabel: string;
@@ -454,6 +471,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     relatedPresentationsDesc: 'Autres formes, dosages ou marques partageant cette substance active',
     viewDetails: 'Consulter la fiche',
 
+    sectionTimeline: 'Évolution & Historique des Nomenclatures',
+    timelineIntro: 'Traçabilité comparative à travers les 18 éditions officielles et recueils ministériels (2021 – 2026)',
+    timelineLoading: 'Chargement de l’historique des nomenclatures...',
+    timelineNoData: 'Aucune donnée historique spécifique répertoriée pour cette spécialité.',
+    timelineError: 'Impossible de charger l’historique des versions officielles.',
+    timelineFieldOld: 'Édition antérieure',
+    timelineFieldNew: 'Nouvelle valeur',
+    timelineEventInitial: 'Autorisation Initiale',
+    timelineEventAppeared: 'Première Apparition',
+    timelineEventStatusChange: 'Changement de Statut / Liste',
+    timelineEventModification: 'Modification de Données',
+    timelineEventWithdrawal: 'Retrait Officiel',
+    timelineEventConfirmed: 'Dernière Confirmation',
+    timelineFilterAll: 'Toutes les versions',
+    timelineFilterChangesOnly: 'Modifications uniquement',
+
     codeStatutLabel: 'Origine de fabrication (STATUT)',
     codeTypeLabel: 'Classification produit (TYPE)',
     codeP1Label: 'Usage hospitalier (P1 - HOP)',
@@ -681,6 +714,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     relatedPresentationsTitle: 'مستحضرات أخرى لنفس المادة الفعالة (DCI)',
     relatedPresentationsDesc: 'أشكال أو جرعات أخرى تشترك في نفس المادة الفعالة',
     viewDetails: 'عرض التفاصيل',
+
+    sectionTimeline: 'سجل التطور والتنظيم عبر طبعات المدونة الرسمية',
+    timelineIntro: 'تتبع ومقارنة التعديلات عبر 18 طبعة رسمية وسجلات وزارية منشورة (2021 – 2026)',
+    timelineLoading: 'جاري تحميل السجل التاريخي للمدونة...',
+    timelineNoData: 'لا تتوفر بيانات تاريخية سابقة مسجلة لهذا الدواء في الطبعات المؤرشفة.',
+    timelineError: 'تعذر تحميل السجل التاريخي للطبعات الرسمية.',
+    timelineFieldOld: 'الطبعة السابقة',
+    timelineFieldNew: 'القيمة الجديدة',
+    timelineEventInitial: 'الترخيص الأولي',
+    timelineEventAppeared: 'أول ظهور بالمدونة',
+    timelineEventStatusChange: 'تغيير التصنيف / القائمة',
+    timelineEventModification: 'تعديل المعطيات',
+    timelineEventWithdrawal: 'سحب رسمي',
+    timelineEventConfirmed: 'تأكيد الوضعية الأخيرة',
+    timelineFilterAll: 'جميع الطبعات',
+    timelineFilterChangesOnly: 'التعديلات فقط',
 
     codeStatutLabel: 'منشأ التصنيع (STATUT)',
     codeTypeLabel: 'تصنيف المنتج (TYPE)',
