@@ -5,6 +5,7 @@ import { getHrefForRecord } from '@/utils/seoRegistry';
 import { useData } from '@/context/DataContext';
 import { useFavourites } from '@/context/FavouritesContext';
 import { StatusBadge } from '@/components/common/StatusBadge';
+import { VersionTimeline } from '@/components/detail/VersionTimeline';
 import { cn } from '@/utils/cn';
 
 export const DetailPage: React.FC = () => {
@@ -511,6 +512,9 @@ export const DetailPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Historical Evolution & Nomenclature Timeline */}
+      <VersionTimeline recordId={record.id} />
 
       {/* Related presentations of same INN (DCI) */}
       {relatedPresentations.length > 0 && (
